@@ -9585,23 +9585,6 @@ body.minimal-chat-ui-active.chat-actions-expanded #chat-interface-screen #chat-m
     animation: shake 0.4s ease;
 }
 
-/* ========== 强制修改直播输入框宽度 (增强版) ========== */
-/* 同时打击 input 和 textarea，并且匹配多种可能的情况 */
-input[data-i18n-placeholder="liveRoomSendMessage"],
-textarea[data-i18n-placeholder="liveRoomSendMessage"],
-input[placeholder*="Say"],
-textarea[placeholder*="Say"],
-input[placeholder*="弹幕"], /* 防止它是中文 */
-textarea[placeholder*="弹幕"] {
-    /* 强制宽度 */
-    width: 60% !important; 
-    max-width: 90vw !important;
-    
-    /* 🔴 测试代码：加个红边框 */
-    /* 如果你看到红边框但宽度没变，说明是宽度被锁死；如果没红边框，说明CSS没加载 */
-    border: 2px solid red !important; 
-}
-
 
 
 
