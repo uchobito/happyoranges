@@ -15233,3 +15233,108 @@ input[type=range] {
 #phone-screen.dark-mode .email-card-footer {
     border-top-color: #333;
 }
+
+/* --- 修复黑市顶部：保持标题居中，缩小并右移按钮 --- */
+
+/* 1. 调整黑市头部的右侧内边距，让按钮组更贴近屏幕右边缘 */
+#auction-screen .header {
+    padding-right: 8px !important; /* 原来是20px，减少后按钮会整体向右移动 */
+}
+
+/* 2. 缩小右侧按钮组内部的间距 */
+#auction-screen .header .header-actions {
+    gap: 5px !important; /* 拉近“新拍品”和“仓库”的距离 */
+}
+
+/* 3. 缩小按钮本身的体积（字体变小、内边距变小） */
+#auction-screen .header .action-btn {
+    font-size: 12px !important;   /* 字体改小 */
+    padding: 4px 8px !important;  /* 按钮变瘦 */
+    min-width: auto !important;   /* 取消最小宽度限制 */
+    height: 28px !important;      /* 降低按钮高度 */
+    line-height: 20px !important; /* 调整文字垂直居中 */
+    border-radius: 4px !important;/* 圆角稍微改小一点以匹配尺寸 */
+}
+
+/* --- 修复 1: 让长按消息菜单的按钮颜色跟随主题强调色 --- */
+#message-actions-modal .custom-modal-footer button:not(#cancel-message-action-btn),
+#message-actions-modal #cancel-message-action-btn,
+/* 覆盖暗黑模式下的强制蓝色 */
+#phone-screen.dark-mode #message-actions-modal .custom-modal-footer button:not(#cancel-message-action-btn),
+#phone-screen.dark-mode #message-actions-modal #cancel-message-action-btn {
+    color: var(--accent-color) !important;
+}
+
+/* --- 修复暗黑模式输入框问题 --- */
+
+/* 1. 彻底隐藏动态评论框的“友善的评论...”提示语 */
+#phone-screen.dark-mode .comment-input::placeholder {
+    color: transparent !important; /* 强制透明，无论暗黑模式怎么变都不显示 */
+}
+
+/* 2. 解除暗黑模式对聊天输入框的“强制接管” */
+/* 这样它就会跟随你的自定义CSS或全局主题色，而不会变成默认的深灰块 */
+#phone-screen.dark-mode #chat-input {
+    background-color: var(--secondary-bg) !important; /* 跟随背景变量 */
+    color: var(--text-primary) !important;            /* 跟随文字变量 */
+    border-color: var(--border-color) !important;     /* 跟随边框变量 */
+    
+    /* 如果你的自定义CSS用了图片背景或其他特殊效果，这一行能防止被遮盖 */
+    background-image: inherit !important; 
+}
+
+/* --- 修复长按弹窗：iOS 18 纯净扁平风格 (修复背景锯齿) --- */
+
+/* 1. 容器样式：纯色不透明，彻底消除锯齿 */
+#message-actions-modal #custom-modal,
+#chat-list-actions-modal #custom-modal {
+    /* 核心：使用纯白背景，不再半透明，彻底解决“抠图不干净” */
+    background-color: #FFFFFF !important;
+    
+    /* 强制裁剪内部，保证圆角极其光滑 */
+    overflow: hidden !important;
+    
+    /* 增加一个柔和的弥散阴影，提升层次感 */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12) !important;
+    border: none !important;
+}
+
+/* 2. 按钮样式：极简浅灰色块 */
+#message-actions-modal .custom-modal-footer button,
+#chat-list-actions-modal .custom-modal-footer button {
+    /* 使用极浅的灰色，营造扁平层级感 */
+    background-color: #F7F7F9 !important;
+    /* 保持圆角 */
+    border-radius: 12px !important;
+    /* 移除边框 */
+    border: none !important;
+    /* 字体加粗一点点，更有质感 */
+    font-weight: 600 !important;
+}
+
+/* 3. 按钮按下去的效果 */
+#message-actions-modal .custom-modal-footer button:active,
+#chat-list-actions-modal .custom-modal-footer button:active {
+    background-color: #E5E5EA !important; /* 按下变深灰 */
+}
+
+/* --- 暗黑模式适配 (纯净黑灰) --- */
+#phone-screen.dark-mode #message-actions-modal #custom-modal,
+#phone-screen.dark-mode #chat-list-actions-modal #custom-modal {
+    /* 深灰色背景 */
+    background-color: #1C1C1E !important;
+    /* 加一个极细的边框防止和背景融为一体 */
+    border: 1px solid #2C2C2E !important;
+}
+
+#phone-screen.dark-mode #message-actions-modal .custom-modal-footer button,
+#phone-screen.dark-mode #chat-list-actions-modal .custom-modal-footer button {
+    /* 按钮使用稍亮的灰色 */
+    background-color: #2C2C2E !important;
+    color: #FFFFFF !important;
+}
+
+#phone-screen.dark-mode #message-actions-modal .custom-modal-footer button:active,
+#phone-screen.dark-mode #chat-list-actions-modal .custom-modal-footer button:active {
+    background-color: #3A3A3C !important;
+}
