@@ -15234,107 +15234,122 @@ input[type=range] {
     border-top-color: #333;
 }
 
-/* --- 修复黑市顶部：保持标题居中，缩小并右移按钮 --- */
+/* ============================================================ */
+/* ▼▼▼ EPhone 终极无灰线纯净版 (修复顶端灰线/布局独立) ▼▼▼ */
+/* ============================================================ */
 
-/* 1. 调整黑市头部的右侧内边距，让按钮组更贴近屏幕右边缘 */
-#auction-screen .header {
-    padding-right: 8px !important; /* 原来是20px，减少后按钮会整体向右移动 */
+/* --- 1. 黑市拍卖修复 --- */
+#auction-screen .header { padding-right: 8px !important; }
+#auction-screen .header > span:nth-child(2) {
+    position: static !important; transform: none !important;
+    flex-grow: 1; text-align: center; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; padding: 0 5px;
 }
-
-/* 2. 缩小右侧按钮组内部的间距 */
-#auction-screen .header .header-actions {
-    gap: 5px !important; /* 拉近“新拍品”和“仓库”的距离 */
-}
-
-/* 3. 缩小按钮本身的体积（字体变小、内边距变小） */
+#auction-screen .header .header-actions { gap: 5px !important; flex-shrink: 0; }
 #auction-screen .header .action-btn {
-    font-size: 12px !important;   /* 字体改小 */
-    padding: 4px 8px !important;  /* 按钮变瘦 */
-    min-width: auto !important;   /* 取消最小宽度限制 */
-    height: 28px !important;      /* 降低按钮高度 */
-    line-height: 20px !important; /* 调整文字垂直居中 */
-    border-radius: 4px !important;/* 圆角稍微改小一点以匹配尺寸 */
+    font-size: 12px !important; padding: 4px 8px !important;
+    min-width: auto !important; height: 28px !important;
+    line-height: 20px !important; border-radius: 4px !important;
 }
 
-/* --- 修复 1: 让长按消息菜单的按钮颜色跟随主题强调色 --- */
-#message-actions-modal .custom-modal-footer button:not(#cancel-message-action-btn),
-#message-actions-modal #cancel-message-action-btn,
-/* 覆盖暗黑模式下的强制蓝色 */
-#phone-screen.dark-mode #message-actions-modal .custom-modal-footer button:not(#cancel-message-action-btn),
-#phone-screen.dark-mode #message-actions-modal #cancel-message-action-btn {
-    color: var(--accent-color) !important;
-}
-
-/* --- 修复暗黑模式输入框问题 --- */
-
-/* 1. 彻底隐藏动态评论框的“友善的评论...”提示语 */
-#phone-screen.dark-mode .comment-input::placeholder {
-    color: transparent !important; /* 强制透明，无论暗黑模式怎么变都不显示 */
-}
-
-/* 2. 解除暗黑模式对聊天输入框的“强制接管” */
-/* 这样它就会跟随你的自定义CSS或全局主题色，而不会变成默认的深灰块 */
+/* --- 2. 暗黑模式输入框修复 --- */
+#phone-screen.dark-mode .comment-input::placeholder { color: transparent !important; }
 #phone-screen.dark-mode #chat-input {
-    background-color: var(--secondary-bg) !important; /* 跟随背景变量 */
-    color: var(--text-primary) !important;            /* 跟随文字变量 */
-    border-color: var(--border-color) !important;     /* 跟随边框变量 */
-    
-    /* 如果你的自定义CSS用了图片背景或其他特殊效果，这一行能防止被遮盖 */
+    background-color: var(--secondary-bg) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
     background-image: inherit !important; 
 }
 
-/* --- 修复长按弹窗：iOS 18 纯净扁平风格 (修复背景锯齿) --- */
-
-/* 1. 容器样式：纯色不透明，彻底消除锯齿 */
-#message-actions-modal #custom-modal,
-#chat-list-actions-modal #custom-modal {
-    /* 核心：使用纯白背景，不再半透明，彻底解决“抠图不干净” */
+/* --- 3. 弹窗容器修复 (纯白底 + 去除所有杂线) --- */
+#chat-list-actions-modal #custom-modal,
+#message-actions-modal #custom-modal {
     background-color: #FFFFFF !important;
-    
-    /* 强制裁剪内部，保证圆角极其光滑 */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-radius: 14px !important;
     overflow: hidden !important;
-    
-    /* 增加一个柔和的弥散阴影，提升层次感 */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12) !important;
+    border: none !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 【关键修复】隐藏头部和内容，确保没东西占位 */
+#chat-list-actions-modal .custom-modal-header,
+#chat-list-actions-modal .custom-modal-body,
+#message-actions-modal .custom-modal-header,
+#message-actions-modal .custom-modal-body {
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
     border: none !important;
 }
 
-/* 2. 按钮样式：极简浅灰色块 */
-#message-actions-modal .custom-modal-footer button,
-#chat-list-actions-modal .custom-modal-footer button {
-    /* 使用极浅的灰色，营造扁平层级感 */
-    background-color: #F7F7F9 !important;
-    /* 保持圆角 */
-    border-radius: 12px !important;
-    /* 移除边框 */
+/* --- 4. 按钮容器修复 (去除顶端灰线 border-top) --- */
+#chat-list-actions-modal .custom-modal-footer,
+#message-actions-modal .custom-modal-footer {
+    border-top: none !important; /* 【核心】去掉那条灰线！ */
+    background: transparent !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 10px !important;
+    gap: 8px !important;
+}
+
+/* --- 5. 消息列表菜单 (垂直布局) --- */
+#chat-list-actions-modal .custom-modal-footer {
+    display: flex !important;
+    flex-direction: column !important;
+}
+#chat-list-actions-modal button {
+    width: 100% !important;
+    background-color: #F2F2F7 !important;
+    color: var(--accent-color) !important; /* 跟随主题色 */
+    border-radius: 10px !important;
     border: none !important;
-    /* 字体加粗一点点，更有质感 */
+    padding: 14px 0 !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+}
+
+/* --- 6. 聊天界面菜单 (网格布局) --- */
+#message-actions-modal .custom-modal-footer {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+}
+#message-actions-modal button {
+    width: 47% !important;
+    flex-grow: 1 !important;
+    background-color: #F2F2F7 !important;
+    color: var(--accent-color) !important; /* 跟随主题色 */
+    border-radius: 10px !important;
+    border: none !important;
+    padding: 12px 0 !important;
+    margin: 0 !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+}
+/* 取消按钮单独一行 */
+#message-actions-modal #cancel-message-action-btn {
+    width: 100% !important;
+    margin-top: 5px !important;
     font-weight: 600 !important;
 }
 
-/* 3. 按钮按下去的效果 */
-#message-actions-modal .custom-modal-footer button:active,
-#chat-list-actions-modal .custom-modal-footer button:active {
-    background-color: #E5E5EA !important; /* 按下变深灰 */
-}
-
-/* --- 暗黑模式适配 (纯净黑灰) --- */
-#phone-screen.dark-mode #message-actions-modal #custom-modal,
-#phone-screen.dark-mode #chat-list-actions-modal #custom-modal {
-    /* 深灰色背景 */
+/* --- 7. 暗黑模式适配 --- */
+#phone-screen.dark-mode #chat-list-actions-modal #custom-modal,
+#phone-screen.dark-mode #message-actions-modal #custom-modal {
     background-color: #1C1C1E !important;
-    /* 加一个极细的边框防止和背景融为一体 */
     border: 1px solid #2C2C2E !important;
 }
-
-#phone-screen.dark-mode #message-actions-modal .custom-modal-footer button,
-#phone-screen.dark-mode #chat-list-actions-modal .custom-modal-footer button {
-    /* 按钮使用稍亮的灰色 */
+#phone-screen.dark-mode #chat-list-actions-modal button,
+#phone-screen.dark-mode #message-actions-modal button {
     background-color: #2C2C2E !important;
-    color: #FFFFFF !important;
+    color: var(--accent-color) !important;
 }
-
-#phone-screen.dark-mode #message-actions-modal .custom-modal-footer button:active,
-#phone-screen.dark-mode #chat-list-actions-modal .custom-modal-footer button:active {
+#phone-screen.dark-mode #chat-list-actions-modal button:active,
+#phone-screen.dark-mode #message-actions-modal button:active {
     background-color: #3A3A3C !important;
 }
