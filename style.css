@@ -10460,6 +10460,9 @@ html body #memory-list-container .memory-card::after {
 
 /* --- 倒计时卡片：只换肤、不改大小版 --- */
 
+/* 引入字体 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
+
 /* 使用 body 前缀覆盖原有样式 */
 body .countdown-card {
     /* 1. 【核心】只关掉特效，不碰尺寸！ */
@@ -10494,7 +10497,7 @@ body .countdown-card::after {
 /* 1. 标题 */
 body .countdown-card .title {
     /* 字体 */
-    font-weight: 500 !important;
+    font-weight: 200 !important;
     
     /* 颜色：极淡水印色 */
     color: #F0ECE6 !important;
@@ -10514,7 +10517,7 @@ body .countdown-card .title {
 
 /* 2. 倒计时数字 */
 body .countdown-card .timer {
-    font-weight: 600 !important;
+    font-weight: 420 !important;
     
     /* 颜色：深岩灰 */
     color: #4A403A !important;
@@ -10553,6 +10556,9 @@ body .countdown-card .target-date::before {
 }
 
 /* --- 日记卡片：纯换肤版 (绝不含任何宽高尺寸设置) --- */
+
+/* 引入字体 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
 
 /* 主容器：只改颜色、去特效 */
 body .memory-card {
@@ -10603,6 +10609,7 @@ body .memory-card .header {
 
 /* 日期样式 */
 body .memory-card .date {
+    font-family: sans-serif !important;
     font-size: 11px !important;
     color: #9E948A !important;
     line-height: 1 !important;
@@ -10611,6 +10618,7 @@ body .memory-card .date {
 
 /* 作者样式 */
 body .memory-card .author {
+    font-family: "Noto Serif SC", serif !important;
     font-size: 12px !important;
     font-weight: 700 !important;
     color: #8C5E5E !important;
