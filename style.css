@@ -10402,7 +10402,6 @@ html body #memory-list-container .memory-card .content {
     margin: 0 !important;
     padding: 0 !important;
     
-    font-family: -apple-system, sans-serif !important;
     font-size: 14px !important;
     line-height: 1.5 !important;
     color: #333 !important;
@@ -10461,9 +10460,6 @@ html body #memory-list-container .memory-card::after {
 
 /* --- 倒计时卡片：只换肤、不改大小版 --- */
 
-/* 引入字体 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
-
 /* 使用 body 前缀覆盖原有样式 */
 body .countdown-card {
     /* 1. 【核心】只关掉特效，不碰尺寸！ */
@@ -10484,8 +10480,6 @@ body .countdown-card {
     /* 4. 去掉原来的大投影，改用极淡的悬浮感 */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
     
-    /* 【绝对不写 width, height, padding, margin】 */
-    /* 让网站原来的代码控制它多大就是多大 */
 }
 
 /* 隐藏原来的装饰伪元素 */
@@ -10497,11 +10491,10 @@ body .countdown-card::after {
 
 /* --- 内部字体美化 (只改颜色和字体，不改排版位置) --- */
 
-/* 1. 标题 "1" */
+/* 1. 标题 */
 body .countdown-card .title {
     /* 字体 */
-    font-family: "Noto Serif SC", serif !important;
-    font-weight: 700 !important;
+    font-weight: 500 !important;
     
     /* 颜色：极淡水印色 */
     color: #F0ECE6 !important;
@@ -10521,8 +10514,7 @@ body .countdown-card .title {
 
 /* 2. 倒计时数字 */
 body .countdown-card .timer {
-    font-family: "Noto Serif SC", serif !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     
     /* 颜色：深岩灰 */
     color: #4A403A !important;
@@ -10562,10 +10554,7 @@ body .countdown-card .target-date::before {
 
 /* --- 日记卡片：纯换肤版 (绝不含任何宽高尺寸设置) --- */
 
-/* 引入字体 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
-
-/* 主容器：只改颜色、字体、去特效 */
+/* 主容器：只改颜色、去特效 */
 body .memory-card {
     /* 1. 【核心】只做皮肤设计 */
     background: #FDFBF7 !important; 
@@ -10586,10 +10575,8 @@ body .memory-card {
     box-sizing: border-box !important;
     
     /* 4. 字体颜色 */
-    font-family: "Noto Serif SC", "Songti SC", serif !important;
     color: #4A403A !important;
 
-    /* ❌ 没有任何 width, height, min-height, flex 设置 */
 }
 
 /* 隐藏不需要的伪元素装饰 */
@@ -10616,7 +10603,6 @@ body .memory-card .header {
 
 /* 日期样式 */
 body .memory-card .date {
-    font-family: sans-serif !important;
     font-size: 11px !important;
     color: #9E948A !important;
     line-height: 1 !important;
@@ -10625,7 +10611,6 @@ body .memory-card .date {
 
 /* 作者样式 */
 body .memory-card .author {
-    font-family: "Noto Serif SC", serif !important;
     font-size: 12px !important;
     font-weight: 700 !important;
     color: #8C5E5E !important;
@@ -10646,7 +10631,6 @@ body .memory-card .author::before {
 
 /* --- 正文区域 --- */
 body .memory-card .content {
-    font-family: "Noto Serif SC", serif !important;
     font-size: 14px !important;
     color: #594D46 !important;
     line-height: 1.6 !important;
