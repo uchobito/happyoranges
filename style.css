@@ -10497,7 +10497,7 @@ body .countdown-card::after {
 /* 1. 标题 */
 body .countdown-card .title {
     /* 字体 */
-    font-weight: 200 !important;
+    font-weight: 100 !important;
     
     /* 颜色：极淡水印色 */
     color: #F0ECE6 !important;
