@@ -9863,6 +9863,83 @@ body.minimal-chat-ui-active.chat-actions-expanded #chat-interface-screen #chat-m
     .waimai-details-btn { font-size: 0 !important; }
     .waimai-details-btn::before { font-size: 10px; }
 
+/* --- 外卖代付卡片：布局防挤压修复 --- */
+
+/* 1. 支付区域容器：允许换行 */
+.payment-box {
+    display: flex !important;
+    flex-wrap: wrap !important; /* 【核心】允许元素换行 */
+    justify-content: space-between !important; /* 左右对齐 */
+    align-items: baseline !important;
+    
+    /* 增加一点底部留白 */
+    padding-bottom: 10px !important;
+    border-bottom: 1px dashed #E0DCD6 !important;
+    margin-bottom: 12px !important;
+}
+
+/* 2. 左侧标签 "需付款" */
+.payment-label {
+    /* 强制不换行，防止被挤压 */
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    
+    /* 字体样式 */
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #5A4E46 !important; /* 深咖色 */
+}
+
+/* 3. 右侧金额 "¥50.00" */
+.amount {
+    /* 强制不换行 */
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    
+    /* 字体样式 */
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    font-family: "Noto Serif SC", serif !important; /* 保持衬线体高级感 */
+    color: #5A4E46 !important;
+}
+
+/* 4. 【核心修改】倒计时区域：强制占满下一行 */
+.countdown-label {
+    width: 100% !important; /* 独占一行 */
+    margin-top: 8px !important; /* 和上面拉开距离 */
+    
+    /* 内部布局：文字在左，倒计时在右 */
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    
+    /* 字体样式 */
+    font-size: 10px !important;
+    color: #9E948A !important; /* 浅暖灰 */
+}
+
+/* 5. 倒计时数字块样式 (美化) */
+.countdown-timer span {
+    display: inline-block !important;
+    background: #5A4E46 !important; /* 深咖色背景 */
+    color: #fff !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+    margin-left: 2px !important;
+    font-family: monospace !important;
+    font-weight: bold !important;
+    font-size: 10px !important;
+}
+
+/* 6. 顶部标题微调 */
+.request-title {
+    font-size: 11px !important;
+    color: #9E948A !important;
+    margin-bottom: 8px !important;
+    text-align: center !important; /* 居中更好看 */
+    letter-spacing: 1px !important;
+}
+
 </style>
 
 <style>
@@ -10269,6 +10346,119 @@ body.minimal-chat-ui-active.chat-actions-expanded #chat-interface-screen #chat-m
         transform: translateX(3px) !important;
     }
 
+/* =================================================================
+   💾 记忆卡片最终修复补丁 (防挡字 + 紧凑米色版)
+   ================================================================= */
+
+/* 1. 卡片容器：米色、紧凑、底部留足空间 */
+html body #memory-list-container .memory-card {
+    /* 强制重置盒模型 */
+    width: 100% !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    display: block !important;
+    
+    /* --- 核心修改点 --- */
+    /* 上 12px | 左右 15px (不贴边) */
+    /* 下 45px (关键！留出足够空间，确保最后一行字绝对不会被按钮盖住) */
+    padding: 12px 15px 45px 15px !important; 
+    
+    margin-bottom: 10px !important; /* 卡片间距 */
+    
+    /* 视觉风格：米色、无边框、微圆角 */
+    background-color: #fcfcf9 !important; 
+    border: none !important;
+    border-radius: 6px !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* 2. 内部排版清洗 */
+html body #memory-list-container .memory-card > div {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* 3. 来源标签：小字、顶格左对齐 */
+html body #memory-list-container .memory-card .content > div:first-child {
+    display: block !important;
+    font-size: 11px !important;
+    color: #b0b0b0 !important;
+    
+    margin: 0 0 6px 0 !important;
+    padding-bottom: 4px !important;
+    border-bottom: 1px solid #eee !important;
+    
+    background: transparent !important;
+    text-align: left !important;
+}
+
+/* 4. 正文内容：左对齐、防止文字溢出 */
+html body #memory-list-container .memory-card .content {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    
+    font-family: -apple-system, sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    color: #333 !important;
+    
+    /* 强制左对齐，并确保长单词换行 */
+    text-align: left !important;
+    word-wrap: break-word !important; 
+}
+
+/* 5. 按钮组：固定在右下角安全区 */
+html body #memory-list-container .memory-card > div > div:last-child {
+    position: absolute !important;
+    /* 距离底部 12px (离底边稍远一点) */
+    bottom: 12px !important; 
+    /* 距离右侧 15px (和文字边距对齐) */
+    right: 15px !important; 
+    
+    display: flex !important;
+    gap: 12px !important; /* 按钮间距 */
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    width: auto !important;
+    background: transparent !important;
+    z-index: 10 !important;
+}
+
+/* 6. 按钮样式：无背景、极简灰色 */
+html body #memory-list-container .memory-action-btn {
+    color: #ccc !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 16px !important;
+    height: 16px !important;
+    opacity: 0.8 !important;
+}
+
+html body #memory-list-container .memory-action-btn:hover {
+    color: #666 !important;
+    background: transparent !important;
+    opacity: 1 !important;
+}
+
+html body #memory-list-container .memory-action-btn svg {
+    width: 15px !important;
+    height: 15px !important;
+}
+
+/* 隐藏多余伪元素 */
+html body #memory-list-container .memory-card::before,
+html body #memory-list-container .memory-card::after {
+    display: none !important;
+}
+
 /* --- 倒计时卡片：只换肤、不改大小版 --- */
 
 /* 引入字体 */
@@ -10370,79 +10560,79 @@ body .countdown-card .target-date::before {
     -webkit-text-fill-color: #C0B8B0 !important;
 }
 
-/* --- 日记卡片：头部布局微调版 (文字沉底) --- */
+/* --- 日记卡片：纯换肤版 (绝不含任何宽高尺寸设置) --- */
 
 /* 引入字体 */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
 
-/* 主容器 (保持不变) */
+/* 主容器：只改颜色、字体、去特效 */
 body .memory-card {
-    /* 保持基础留白 */
-    padding: 20px !important; 
-    
-    /* 皮肤 */
+    /* 1. 【核心】只做皮肤设计 */
     background: #FDFBF7 !important; 
     background-color: #FDFBF7 !important;
-    background-image: none !important;
+    background-image: none !important; /* 彻底去除紫色渐变 */
+    
     border: 1px solid #E8E4E0 !important; 
     border-radius: 6px !important;
+    
+    /* 2. 【核心】去除所有 3D 和投影特效 */
+    transform: none !important;
+    perspective: none !important;
+    backdrop-filter: none !important;
     box-shadow: none !important;
     
-    /* 字体与尺寸 */
+    /* 3. 内部排版设计 (内边距) */
+    padding: 20px !important; 
+    box-sizing: border-box !important;
+    
+    /* 4. 字体颜色 */
     font-family: "Noto Serif SC", "Songti SC", serif !important;
     color: #4A403A !important;
-    box-sizing: border-box !important;
-    width: auto !important;
-    height: auto !important;
-    overflow: hidden !important;
+
+    /* ❌ 没有任何 width, height, min-height, flex 设置 */
 }
 
-/* 隐藏伪元素 */
+/* 隐藏不需要的伪元素装饰 */
 body .memory-card::before,
 body .memory-card::after {
     content: none !important;
     display: none !important;
 }
 
-/* --- 头部区域 (核心修改) --- */
+/* --- 头部区域：日期和作者 --- */
 body .memory-card .header {
+    /* 保持您喜欢的布局：底部对齐 */
     display: flex !important;
     justify-content: space-between !important;
+    align-items: flex-end !important;
     
-    /* 【核心修改 1】改为底部对齐，让文字像坐在虚线上一样 */
-    align-items: flex-end !important; 
-    
-    /* 【核心修改 2】增加 Top 间距，减少 Bottom 间距 */
-    /* 上12px(压下来), 左右10px, 下6px(贴近虚线) */
-    padding: 12px 10px 6px 10px !important; 
-    
-    /* 底部虚线 */
-    border-bottom: 1px dashed #DCC !important;
+    /* 内部间距设计 */
+    padding: 12px 10px 6px 10px !important;
     margin: 0 0 16px 0 !important;
-    width: auto !important;
+    border-bottom: 1px dashed #DCC !important;
+    
+    /* ❌ 不设置 width */
 }
 
-/* 日期 */
+/* 日期样式 */
 body .memory-card .date {
     font-family: sans-serif !important;
     font-size: 11px !important;
     color: #9E948A !important;
-    letter-spacing: 0.5px !important;
+    line-height: 1 !important;
     margin: 0 !important;
-    /* 稍微修正一点行高，防止字体本身留白导致看起来没对齐 */
-    line-height: 1 !important; 
 }
 
-/* 作者 */
+/* 作者样式 */
 body .memory-card .author {
     font-family: "Noto Serif SC", serif !important;
     font-size: 12px !important;
     font-weight: 700 !important;
     color: #8C5E5E !important;
+    line-height: 1 !important;
+    margin: 0 !important;
     display: flex !important;
     align-items: center !important;
-    margin: 0 !important;
-    line-height: 1 !important; /* 同上 */
 }
 
 /* 作者前缀 */
@@ -10454,16 +10644,19 @@ body .memory-card .author::before {
     font-size: 10px !important;
 }
 
-/* --- 正文区域 (保持不变) --- */
+/* --- 正文区域 --- */
 body .memory-card .content {
     font-family: "Noto Serif SC", serif !important;
     font-size: 14px !important;
     color: #594D46 !important;
     line-height: 1.6 !important;
     text-align: justify !important;
-    width: auto !important;
-    margin: 0 !important;
+    
     padding: 0 4px !important;
+    margin: 0 !important;
+
+    /* 【关键】允许文字正常显示，但不设置盒子大小 */
+    white-space: normal !important; 
 }
 
 </style>
