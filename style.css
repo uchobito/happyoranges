@@ -9752,3 +9752,718 @@ body.minimal-chat-ui-active.chat-actions-expanded #chat-interface-screen #chat-m
     color: #ff3b30 !important;
 }
 
+<style>
+    /* 引入衬线体，营造杂志感 */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&display=swap');
+
+    /* 1. 画布：干净清透 */
+    .content {
+        background-color: #F2F1EF; /* 亚麻灰背景 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 80px;
+        font-family: "Noto Serif SC", "Songti SC", serif; /* 强制使用衬线体，显精致 */
+    }
+
+    /* 2. 卡片：横向迷你票据 */
+    .waimai-card {
+        width: 230px !important; /* 【修改】260-30=230px */
+        background: #FFFCFA !important; /* 极其温暖的蛋壳白 */
+        border-radius: 8px !important; /* 小圆角，像一张票 */
+        /* 极淡的暖色投影，像纸张浮在桌上 */
+        box-shadow: 0 4px 12px rgba(100, 90, 80, 0.08) !important; 
+        border: 1px solid rgba(0,0,0,0.04) !important;
+        padding: 10px !important; /* 【修改】减小内边距以压缩高度 */
+        position: relative !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 暴力隐藏头部 */
+    .waimai-header { display: none !important; }
+
+    /* 3. 内容区：Flex布局实现“左右结构”，压缩高度 */
+    .waimai-main {
+        padding: 0 !important;
+        background: transparent !important;
+    }
+
+    /* 顶部的小标签：日期/状态 */
+    .request-title {
+        font-size: 9px !important;
+        color: #A89F91 !important; /* 浅暖灰，非常柔和 */
+        margin-bottom: 8px !important; /* 【修改】减小间距以压缩高度 */
+        letter-spacing: 1px !important;
+        text-transform: uppercase !important;
+        font-family: sans-serif !important; /* 标签用无衬线体，对比度更好 */
+    }
+    /* 伪元素修改文案 */
+    .request-title { font-size: 0 !important; }
+    .request-title::after {
+        /* 【修改】不再包含具体数字，改为通用票据标题，避免重复 */
+        content: "TICKET RECEIPT";
+        font-size: 9px;
+        display: block;
+    }
+
+    /* 4. 核心区域：横向排列！ */
+    .payment-box {
+        background: transparent !important;
+        padding: 0 !important;
+        border: none !important;
+        margin-bottom: 10px !important; /* 【修改】减小间距以压缩高度 */
+        display: flex !important; /* 开启Flex */
+        justify-content: space-between !important; /* 左右撑开 */
+        align-items: baseline !important; /* 基线对齐 */
+        border-bottom: 1px dashed #E0DCD6 !important; /* 底部虚线分割 */
+        padding-bottom: 8px !important; /* 【修改】减小底部留白 */
+    }
+
+    /* 菜名：深咖色，不黑 */
+    .payment-label {
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        color: #5A4E46 !important; /* 深褐咖色，比黑色柔和太多了 */
+        line-height: 1.3 !important;
+        max-width: 140px !important; /* 【修改】宽度减小适配整体 */
+        text-align: left !important;
+    }
+
+    /* 价格：放在右边 */
+    .amount {
+        font-size: 16px !important;
+        color: #8C8279 !important; /* 中性暖灰 */
+        font-weight: 500 !important;
+        /* 【修改】使用等宽字体（Monospace）确保数字排列绝对整齐 */
+        font-family: 'Menlo', 'Monaco', 'Courier New', monospace !important;
+        margin-top: 0 !important;
+        white-space: nowrap !important;
+        letter-spacing: -0.5px !important; /* 数字紧凑一点更好看 */
+    }
+
+    /* 5. 按钮：极简文字链接风格 */
+    .waimai-details-btn {
+        width: 100% !important;
+        height: auto !important;
+        background: transparent !important; /* 去掉背景色 */
+        color: #9E948A !important; /* 浅咖色文字 */
+        border: none !important;
+        font-size: 10px !important;
+        text-align: right !important; /* 靠右放 */
+        padding: 0 !important;
+        cursor: pointer !important;
+        letter-spacing: 1px !important;
+    }
+    
+    /* 按钮文字前面加个小箭头 */
+    .waimai-details-btn::before {
+        content: "View Details →";
+    }
+    /* 隐藏原来的中文 */
+    .waimai-details-btn { font-size: 0 !important; }
+    .waimai-details-btn::before { font-size: 10px; }
+
+</style>
+
+<style>
+    /* --- 全局设置 (无需改动) --- */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&display=swap');
+    
+    .content {
+        background-color: #F2F1EF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 80px;
+        font-family: "Noto Serif SC", "Songti SC", serif;
+    }
+
+    /* --- 定位卡片：蓝色系清透版 --- */
+
+    .location-share-card {
+        width: 230px !important; /* 【关键】严格对齐外卖卡宽度 */
+        background: #FFFFFF !important; /* 纯白背景，比外卖卡更冷一点 */
+        border-radius: 8px !important;
+        /* 投影改为冷色调的蓝灰阴影 */
+        box-shadow: 0 4px 12px rgba(80, 90, 100, 0.08) !important;
+        border: 1px solid rgba(0,0,0,0.03) !important;
+        padding: 10px !important; /* 内边距保持一致 */
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important; /* 进一步减小内部间距 */
+    }
+
+    /* 文字区域：倒序排列 */
+    .card-text-area {
+        display: flex !important;
+        flex-direction: column-reverse !important; 
+        gap: 4px !important;
+        padding: 0 2px !important;
+    }
+
+    /* 顶部标签：改为冷灰色 */
+    .card-text-secondary { font-size: 0 !important; }
+    .card-text-secondary::after {
+        content: "CURRENT LOCATION"; /* 英文标签 */
+        font-size: 9px !important;
+        color: #94A3B8 !important; /* 冷灰色 (Slate-400) */
+        letter-spacing: 1px !important;
+        font-family: sans-serif !important;
+        text-transform: uppercase !important;
+        display: block !important;
+    }
+
+    /* 主标题：深岩石蓝 */
+    .card-text-primary {
+        font-size: 13px !important;
+        color: #334155 !important; /* 深岩石色 (Slate-700)，非常有质感 */
+        font-family: "Noto Serif SC", serif !important;
+        font-weight: 700 !important;
+        line-height: 1.3 !important;
+        /* 限制行数 */
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+    }
+
+    /* 地图区域：纯CSS绘制的抽象地图 */
+    .card-map-area {
+        width: 100% !important;
+        height: 70px !important; /* 【关键】高度压缩，显得精致 */
+        border-radius: 4px !important;
+        background-color: #F0F9FF !important; /* 极淡的爱丽丝蓝 */
+        border: 1px solid #E0F2FE !important; /* 描边 */
+        position: relative !important;
+        overflow: hidden !important;
+        /* 删除了原来的 image url */
+        background-image: none !important; 
+    }
+
+    /* 用伪元素画一点淡淡的网格线，模拟地图经纬度，增加细节感 */
+    .card-map-area::before {
+        content: "" !important;
+        position: absolute !important;
+        top: 0; left: 0; right: 0; bottom: 0;
+        /* 极其淡的网格线 */
+        background-image: 
+            linear-gradient(#E0F2FE 1px, transparent 1px),
+            linear-gradient(90deg, #E0F2FE 1px, transparent 1px) !important;
+        background-size: 15px 15px !important; /* 网格大小 */
+        opacity: 0.6 !important;
+    }
+
+    /* 大头针图标容器 */
+    .card-pin-icon {
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        position: relative !important;
+        z-index: 2 !important; /* 确保在网格上面 */
+    }
+    
+    /* 图标本身：改为柔和的蓝色 */
+    .card-pin-icon svg {
+        width: 22px !important;
+        height: 22px !important;
+        color: #60A5FA !important; /* 柔和的蓝色 (Blue-400) */
+        filter: drop-shadow(0 2px 4px rgba(96, 165, 250, 0.3)) !important; /* 蓝色柔光投影 */
+    }
+
+</style>
+
+<style>
+    /* --- 全局设置 --- */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&display=swap');
+    
+    .content {
+        background-color: #F2F1EF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 80px;
+        font-family: "Noto Serif SC", "Songti SC", serif;
+    }
+
+    /* --- 转账卡片：终极显色版 --- */
+    .transfer-card {
+        width: 230px !important;
+        background: #FFF9F9 !important; /* 极淡的腮红白 */
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px rgba(130, 100, 100, 0.08) !important;
+        border: 1px solid rgba(0,0,0,0.03) !important;
+        padding: 8px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        position: relative !important;
+    }
+
+    /* 暴力清除任何伪元素干扰 */
+    .transfer-card::before,
+    .transfer-card::after {
+        content: none !important;
+        display: none !important;
+    }
+
+    /* 1. 顶部标题区域 [转账给 我] */
+    .transfer-title {
+        display: flex !important;
+        align-items: center !important;
+        margin-bottom: 6px !important;
+        font-size: 13px !important; /* 恢复字号 */
+        font-weight: 700 !important;
+        
+        /* 【核弹级修复】强制填充颜色，覆盖所有白色设置 */
+        color: #5A4E46 !important; 
+        -webkit-text-fill-color: #5A4E46 !important; 
+        text-shadow: none !important; /* 去掉任何可能发光的文字阴影 */
+    }
+
+    /* 如果你需要保留英文 TRANSFER TICKET，加在后面 */
+    .transfer-title::after {
+        content: " TICKET"; 
+        font-size: 9px !important;
+        color: #C0A8A8 !important; 
+        -webkit-text-fill-color: #C0A8A8 !important;
+        letter-spacing: 1px !important;
+        font-family: sans-serif !important;
+        text-transform: uppercase !important;
+        margin-left: 6px !important;
+        font-weight: normal !important;
+        opacity: 0.8 !important;
+    }
+
+    /* 图标颜色 */
+    .transfer-title svg {
+        width: 14px !important;
+        height: 14px !important;
+        fill: #D4BebE !important; /* 玫瑰金图标 */
+        margin-right: 4px !important;
+    }
+
+    /* 2. 金额区域 [¥ 6.66] */
+    .transfer-amount {
+        font-family: "Noto Serif SC", "Times New Roman", serif !important; 
+        font-size: 26px !important;
+        font-weight: 700 !important;
+        
+        /* 【核弹级修复】强制玫瑰棕色 */
+        color: #9E7E7E !important; 
+        -webkit-text-fill-color: #9E7E7E !important; 
+        
+        margin-bottom: 8px !important;
+        letter-spacing: -0.5px !important;
+        line-height: 1.2 !important;
+        border-bottom: 1px dashed #EEDDDD !important;
+        padding-bottom: 8px !important;
+        text-align: left !important;
+    }
+
+    /* 3. 备注区域 [测试小红包...] */
+    .transfer-note {
+        font-size: 11px !important;
+        
+        /* 【核弹级修复】强制深灰，拒绝白色 */
+        color: #8D7B7B !important; 
+        -webkit-text-fill-color: #8D7B7B !important;
+        
+        line-height: 1.4 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        font-family: sans-serif !important;
+    }
+
+    /* 装饰前缀 MEMO */
+    .transfer-note::before {
+        content: "MEMO: ";
+        font-size: 9px !important;
+        color: #C0B0B0 !important;
+        -webkit-text-fill-color: #C0B0B0 !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.5px !important;
+        margin-right: 2px !important;
+    }
+
+</style>
+
+<style>
+    /* --- 全局设置 (保持不变) --- */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
+    
+    .content {
+        background-color: #F2F1EF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 80px;
+        font-family: "Noto Serif SC", "Songti SC", serif;
+    }
+
+<style>
+    /* --- 全局设置 (保持不变) --- */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
+    
+    .content {
+        background-color: #F2F1EF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 80px;
+        font-family: "Noto Serif SC", "Songti SC", serif;
+    }
+
+    /* --- 礼物卡片：画廊邀请函风格 (高度压缩版) --- */
+    .gift-card {
+        width: 230px !important; /* 尺寸严格锁定 */
+        background: #FFFEFD !important; /* 极高明度的陶瓷白 */
+        
+        /* 边框 */
+        border: 1px solid #EAE6E0 !important; 
+        border-radius: 4px !important; 
+        
+        /* 投影 */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04) !important;
+        
+        /* 【核心修改】大幅减小内边距，压缩高度 */
+        padding: 12px 10px !important; 
+        box-sizing: border-box !important;
+        
+        display: flex !important;
+        flex-direction: column !important;
+        
+        /* 【核心修改】减小元素间距 */
+        gap: 6px !important; 
+        
+        /* 强制居中对齐 */
+        text-align: center !important; 
+        align-items: center !important;
+    }
+
+    /* 1. 头部区域 */
+    .gift-header {
+        display: flex !important;
+        justify-content: center !important; 
+        align-items: center !important;
+        padding: 0 !important;
+        border: none !important;
+        width: 100% !important;
+        margin-bottom: 2px !important; /* 微调 */
+    }
+
+    /* 隐藏原图标 */
+    .gift-header-icon { display: none !important; }
+
+    /* 主标题文字 */
+    .gift-header-text {
+        font-family: "Noto Serif SC", serif !important;
+        font-size: 11px !important; 
+        font-weight: 500 !important;
+        color: #8C8279 !important; 
+        -webkit-text-fill-color: #8C8279 !important;
+        letter-spacing: 2px !important; 
+    }
+
+    /* 英文后缀 */
+    .gift-header-text::after {
+        content: " / SPECIAL GIFT"; 
+        font-size: 9px !important;
+        color: #B0A69C !important; 
+        -webkit-text-fill-color: #B0A69C !important;
+        font-family: sans-serif !important;
+        letter-spacing: 1px !important;
+        font-weight: normal !important;
+    }
+
+    /* 2. 礼物内容区 */
+    .gift-items-preview {
+        background: transparent !important;
+        padding: 0 !important;
+        border: none !important;
+        width: 100% !important;
+    }
+
+    /* 单个礼物条目 */
+    .gift-preview-item {
+        display: flex !important;
+        flex-direction: column !important; 
+        align-items: center !important;
+        /* 【修改】减小内部间距 */
+        gap: 2px !important; 
+        padding: 0 !important;
+        border: none !important; 
+    }
+
+    /* 隐藏原图和方块 */
+    .gift-preview-img,
+    .gift-preview-item::before {
+        display: none !important;
+    }
+
+    /* 礼物名称 */
+    .gift-preview-name {
+        font-family: "Noto Serif SC", serif !important;
+        font-size: 18px !important; 
+        color: #2C2A29 !important; 
+        -webkit-text-fill-color: #2C2A29 !important;
+        font-weight: 700 !important;
+        line-height: 1.3 !important; /* 稍微收紧行高 */
+        margin: 0 !important;
+        
+        /* 下划线距离也收紧一点 */
+        border-bottom: 2px solid #F0EBE5 !important;
+        padding-bottom: 2px !important; 
+        display: inline-block !important; 
+    }
+
+    /* 礼物数量 */
+    .gift-preview-quantity {
+         font-family: "Noto Serif SC", serif !important;
+         font-size: 12px !important;
+         color: #9E948A !important; 
+         -webkit-text-fill-color: #9E948A !important;
+         font-weight: 400 !important;
+         font-style: italic !important; 
+         margin-top: 0 !important; /* 去掉顶部间距 */
+    }
+    
+    .gift-preview-quantity::before {
+        content: "Qty. ";
+        font-family: sans-serif !important;
+        font-size: 8px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+    }
+
+    /* 3. 底部页脚 */
+    .gift-footer {
+        font-size: 9px !important;
+        color: #B0A69C !important; 
+        -webkit-text-fill-color: #B0A69C !important;
+        text-align: center !important; 
+        font-family: sans-serif !important;
+        letter-spacing: 1px !important;
+        background: none !important;
+        padding: 0 !important;
+        cursor: pointer !important;
+        opacity: 0.8 !important;
+        border-top: none !important;
+        margin-top: 2px !important; /* 微调 */
+    }
+    
+    /* 箭头 */
+    .gift-footer::after {
+        content: " →";
+        font-family: sans-serif !important;
+        display: inline-block !important;
+        transition: transform 0.2s !important;
+    }
+    .gift-card:hover .gift-footer::after {
+        transform: translateX(3px) !important;
+    }
+
+/* --- 倒计时卡片：只换肤、不改大小版 --- */
+
+/* 引入字体 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
+
+/* 使用 body 前缀覆盖原有样式 */
+body .countdown-card {
+    /* 1. 【核心】只关掉特效，不碰尺寸！ */
+    transform: none !important; /* 关掉歪着的3D */
+    perspective: none !important;
+    backdrop-filter: none !important; /* 关掉毛玻璃 */
+    -webkit-backdrop-filter: none !important;
+    
+    /* 2. 【核心】只改颜色 (米色复古风) */
+    background: #FDFCF8 !important; 
+    background-color: #FDFCF8 !important;
+    background-image: none !important; /* 彻底移除原来的紫色渐变 */
+    
+    /* 3. 边框变细 */
+    border: 1px solid #E8E4E0 !important; 
+    border-radius: 8px !important; /* 稍微圆润一点，不碰大小 */
+    
+    /* 4. 去掉原来的大投影，改用极淡的悬浮感 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+    
+    /* 【绝对不写 width, height, padding, margin】 */
+    /* 让网站原来的代码控制它多大就是多大 */
+}
+
+/* 隐藏原来的装饰伪元素 */
+body .countdown-card::before,
+body .countdown-card::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* --- 内部字体美化 (只改颜色和字体，不改排版位置) --- */
+
+/* 1. 标题 "1" */
+body .countdown-card .title {
+    /* 字体 */
+    font-family: "Noto Serif SC", serif !important;
+    font-weight: 700 !important;
+    
+    /* 颜色：极淡水印色 */
+    color: #F0ECE6 !important;
+    -webkit-text-fill-color: #F0ECE6 !important;
+    text-shadow: none !important;
+    
+    /* 只要位置不对，您可以删掉下面这两行 */
+    position: absolute !important;
+    top: 5px !important; 
+    right: 15px !important;
+    
+    /* 确保不影响原来的大小 */
+    margin: 0 !important;
+    background: none !important;
+    pointer-events: none !important;
+}
+
+/* 2. 倒计时数字 */
+body .countdown-card .timer {
+    font-family: "Noto Serif SC", serif !important;
+    font-weight: 700 !important;
+    
+    /* 颜色：深岩灰 */
+    color: #4A403A !important;
+    -webkit-text-fill-color: #4A403A !important;
+    text-shadow: none !important;
+    
+    /* 稍微收一点底部空隙，但不大改 */
+    margin-bottom: 5px !important;
+    z-index: 1 !important;
+}
+
+/* 3. 目标时间 */
+body .countdown-card .target-date {
+    font-family: sans-serif !important;
+    
+    /* 颜色：浅暖灰 */
+    color: #9E948A !important;
+    -webkit-text-fill-color: #9E948A !important;
+    
+    /* 加条细线 */
+    border-top: 1px solid #EFEDE9 !important;
+    padding-top: 8px !important;
+    
+    width: 100% !important;
+    display: block !important;
+    text-align: center !important;
+    z-index: 1 !important;
+}
+
+/* 装饰前缀 */
+body .countdown-card .target-date::before {
+    content: "Target · " !important;
+    font-weight: 700 !important;
+    color: #C0B8B0 !important;
+    -webkit-text-fill-color: #C0B8B0 !important;
+}
+
+/* --- 日记卡片：头部布局微调版 (文字沉底) --- */
+
+/* 引入字体 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&display=swap');
+
+/* 主容器 (保持不变) */
+body .memory-card {
+    /* 保持基础留白 */
+    padding: 20px !important; 
+    
+    /* 皮肤 */
+    background: #FDFBF7 !important; 
+    background-color: #FDFBF7 !important;
+    background-image: none !important;
+    border: 1px solid #E8E4E0 !important; 
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    
+    /* 字体与尺寸 */
+    font-family: "Noto Serif SC", "Songti SC", serif !important;
+    color: #4A403A !important;
+    box-sizing: border-box !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: hidden !important;
+}
+
+/* 隐藏伪元素 */
+body .memory-card::before,
+body .memory-card::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* --- 头部区域 (核心修改) --- */
+body .memory-card .header {
+    display: flex !important;
+    justify-content: space-between !important;
+    
+    /* 【核心修改 1】改为底部对齐，让文字像坐在虚线上一样 */
+    align-items: flex-end !important; 
+    
+    /* 【核心修改 2】增加 Top 间距，减少 Bottom 间距 */
+    /* 上12px(压下来), 左右10px, 下6px(贴近虚线) */
+    padding: 12px 10px 6px 10px !important; 
+    
+    /* 底部虚线 */
+    border-bottom: 1px dashed #DCC !important;
+    margin: 0 0 16px 0 !important;
+    width: auto !important;
+}
+
+/* 日期 */
+body .memory-card .date {
+    font-family: sans-serif !important;
+    font-size: 11px !important;
+    color: #9E948A !important;
+    letter-spacing: 0.5px !important;
+    margin: 0 !important;
+    /* 稍微修正一点行高，防止字体本身留白导致看起来没对齐 */
+    line-height: 1 !important; 
+}
+
+/* 作者 */
+body .memory-card .author {
+    font-family: "Noto Serif SC", serif !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #8C5E5E !important;
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 !important;
+    line-height: 1 !important; /* 同上 */
+}
+
+/* 作者前缀 */
+body .memory-card .author::before {
+    content: "From: " !important;
+    color: #C0B0B0 !important;
+    font-weight: normal !important;
+    margin-right: 4px !important;
+    font-size: 10px !important;
+}
+
+/* --- 正文区域 (保持不变) --- */
+body .memory-card .content {
+    font-family: "Noto Serif SC", serif !important;
+    font-size: 14px !important;
+    color: #594D46 !important;
+    line-height: 1.6 !important;
+    text-align: justify !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 4px !important;
+}
+
+</style>

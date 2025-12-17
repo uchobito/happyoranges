@@ -2771,7 +2771,109 @@
     <source src="https://phoebeboo.github.io/mewoooo/1-second-of-silence.mp3" type="audio/mpeg">
   </audio><audio id="tts-audio-player" style="display:none;"></audio>
 
+<style>
+/* 1. 卡片主体 */
+html body #memory-list-container .memory-card {
+    /* --- 核心修改：紧凑尺寸 --- */
+    width: 100% !important;
+    box-sizing: border-box !important;
+    
+    /* 上12 | 左15 | 下34 (微增，刚好够放按钮且不挤) | 右15 */
+    padding: 12px 15px 34px 15px !important; 
+    margin-bottom: 10px !important;
+    
+    /* --- 视觉设计 --- */
+    background-color: #fcfcf9 !important; 
+    border: none !important;
+    border-radius: 6px !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+    
+    position: relative !important;
+    display: block !important;
+}
 
+/* 2. 内部清洗 */
+html body #memory-list-container .memory-card > div {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* 3. 来源标签 */
+html body #memory-list-container .memory-card .content > div:first-child {
+    display: block !important;
+    font-size: 11px !important;
+    color: #b0b0b0 !important;
+    
+    margin: 0 0 6px 0 !important; 
+    padding-bottom: 4px !important;
+    border-bottom: 1px solid #eee !important;
+    
+    background: transparent !important;
+    text-align: left !important;
+}
+
+/* 4. 正文内容 */
+html body #memory-list-container .memory-card .content {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    
+    font-family: -apple-system, sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    color: #333 !important;
+    text-align: justify !important;
+}
+
+/* 5. 按钮组：稍微往上提一点 */
+html body #memory-list-container .memory-card > div > div:last-child {
+    position: absolute !important;
+    bottom: 17px !important; /* 从 6px 改为 10px，离底部远一点点 */
+    right: 13px !important;
+    
+    display: flex !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    width: auto !important;
+    background: transparent !important;
+    z-index: 10 !important;
+}
+
+/* 6. 按钮样式 */
+html body #memory-list-container .memory-action-btn {
+    color: #ccc !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    
+    width: 16px !important; 
+    height: 16px !important;
+    opacity: 0.8 !important;
+}
+
+html body #memory-list-container .memory-action-btn:hover {
+    color: #666 !important;
+    background: transparent !important;
+    opacity: 1 !important;
+}
+
+html body #memory-list-container .memory-action-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+html body #memory-list-container .memory-card::before,
+html body #memory-list-container .memory-card::after {
+    display: none !important;
+}
+</style>
 
 </body>
 </html>
