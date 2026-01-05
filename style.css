@@ -9806,27 +9806,36 @@ body.minimal-chat-ui-active.chat-actions-expanded #chat-interface-screen #chat-m
         display: block;
     }
 
-    /* 4. 核心区域：横向排列！ */
+    /* 4. 核心区域：只改了这里！ */
     .payment-box {
         background: transparent !important;
         padding: 0 !important;
         border: none !important;
-        margin-bottom: 10px !important; /* 【修改】减小间距以压缩高度 */
+        margin-bottom: 10px !important; /* 【保持原样】 */
         display: flex !important; /* 开启Flex */
         justify-content: space-between !important; /* 左右撑开 */
-        align-items: baseline !important; /* 基线对齐 */
+        align-items: center !important; /* 【微调】改为居中，确保省略号和价格对齐 */
         border-bottom: 1px dashed #E0DCD6 !important; /* 底部虚线分割 */
-        padding-bottom: 8px !important; /* 【修改】减小底部留白 */
+        padding-bottom: 8px !important; /* 【保持原样】 */
     }
 
     /* 菜名：深咖色，不黑 */
     .payment-label {
         font-size: 14px !important;
         font-weight: 700 !important;
-        color: #5A4E46 !important; /* 深褐咖色，比黑色柔和太多了 */
+        color: #5A4E46 !important; /* 深褐咖色 */
         line-height: 1.3 !important;
-        max-width: 140px !important; /* 【修改】宽度减小适配整体 */
         text-align: left !important;
+        
+        /* === 【修改核心】省略号三件套 === */
+        flex: 1 !important;        /* 占满剩下的空间 */
+        min-width: 0 !important;   /* 允许被压缩 */
+        white-space: nowrap !important; /* 强制不换行 */
+        overflow: hidden !important;    /* 超出隐藏 */
+        text-overflow: ellipsis !important; /* 变成省略号... */
+        
+        padding-right: 10px !important; /* 右边留10px空隙，不撞价格 */
+        max-width: none !important; /* 删掉之前的死宽度 */
     }
 
     /* 价格：放在右边 */
@@ -9834,11 +9843,13 @@ body.minimal-chat-ui-active.chat-actions-expanded #chat-interface-screen #chat-m
         font-size: 16px !important;
         color: #8C8279 !important; /* 中性暖灰 */
         font-weight: 500 !important;
-        /* 【修改】使用等宽字体（Monospace）确保数字排列绝对整齐 */
+        /* 【保持原样】使用等宽字体 */
         font-family: 'Menlo', 'Monaco', 'Courier New', monospace !important;
         margin-top: 0 !important;
         white-space: nowrap !important;
         letter-spacing: -0.5px !important; /* 数字紧凑一点更好看 */
+        
+        flex-shrink: 0 !important; /* 【加了一句】价格绝对不许缩水 */
     }
 
     /* 5. 按钮：极简文字链接风格 */
