@@ -10663,3 +10663,135 @@ body .memory-card .content {
 }
 
 </style>
+
+<style>
+    /* --- 字体引入 --- */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&display=swap');
+
+    /* 【第一步：暴力清洗外层容器】 
+       针对 #transfer-actions-modal 这个ID，强制去掉它身上可能存在的
+       所有背景、阴影和边框，防止“粉色光晕”是它带来的。
+    */
+    #transfer-actions-modal,
+    #transfer-actions-modal.modal {
+        box-shadow: none !important;
+        background: rgba(0, 0, 0, 0.4) !important; /* 保持半透明遮罩，或者改成 transparent 如果你不需要遮罩 */
+        border: none !important;
+        outline: none !important;
+    }
+
+    /* 【第二步：精修内层卡片】
+       使用 ID + class 的组合 (#transfer-actions-modal .transfer-actions-content)
+       确保权重最高，没人能覆盖它！
+    */
+    #transfer-actions-modal .transfer-actions-content {
+        /* 1. 尺寸：精致小巧版 */
+        width: 220px !important;
+        max-width: 90vw !important; /* 防止在极小屏幕溢出 */
+        
+        /* 2. 背景与边框：去油去光，只要干净的线条 */
+        background-color: #FFF9F9 !important; /* 纯净腮红白 */
+        background-image: none !important;    /* 防止有背景图干扰 */
+        border: 1px solid #E6DCDC !important; /* 极细的高级灰粉边框 */
+        border-radius: 6px !important;
+        box-shadow: none !important;          /* 再次强调：不要阴影！ */
+        
+        /* 3. 布局 */
+        margin: auto !important; /* 确保居中 */
+        padding: 16px 12px !important;
+        box-sizing: border-box !important;
+        font-family: "Noto Serif SC", serif !important;
+        position: relative !important;
+        text-align: center !important;
+    }
+
+    /* --- 标题 --- */
+    #transfer-actions-modal .transfer-actions-header {
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        color: #5A4E46 !important;
+        margin-bottom: 12px !important;
+        text-shadow: none !important;
+    }
+
+    /* --- 内容文字 --- */
+    #transfer-actions-modal .transfer-actions-body p {
+        font-size: 11px !important;
+        color: #8D7B7B !important;
+        margin: 0 0 16px 0 !important;
+        line-height: 1.5 !important;
+    }
+
+    /* --- 名字高亮 --- */
+    #transfer-actions-modal #transfer-sender-name {
+        color: #9E7E7E !important;
+        font-weight: 700 !important;
+        border-bottom: 1px dashed #E6DCDC !important;
+    }
+
+    /* --- 底部按钮容器 --- */
+    #transfer-actions-modal .transfer-actions-footer {
+        display: flex !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
+        padding: 0 !important; /* 确保没有内边距干扰 */
+        margin: 0 !important;
+    }
+
+    /* --- 按钮通用 --- */
+    #transfer-actions-modal .action-btn {
+        flex: 1 !important;
+        height: auto !important;
+        line-height: 1.5 !important;
+        border-radius: 4px !important;
+        padding: 5px 0 !important;
+        font-size: 11px !important;
+        font-family: "Noto Serif SC", serif !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    /* 1. 残忍拒绝：描边清透版 */
+    #transfer-actions-modal .action-btn.decline {
+        background: transparent !important;
+        border: 1px solid #D4BEBE !important;
+        color: #A09090 !important;
+    }
+    #transfer-actions-modal .action-btn.decline:hover {
+        background: #FFF0F0 !important;
+        color: #9E7E7E !important;
+        border-color: #9E7E7E !important;
+    }
+
+    /* 2. 开心收下：实心版 */
+    #transfer-actions-modal .action-btn.accept {
+        background: #9E7E7E !important;
+        border: 1px solid #9E7E7E !important;
+        color: #FFFFFF !important;
+    }
+    #transfer-actions-modal .action-btn.accept:hover {
+        background: #8F6F6F !important;
+        border-color: #8F6F6F !important;
+    }
+
+    /* --- 关闭按钮 X --- */
+    #transfer-actions-modal .cancel-btn {
+        position: absolute !important;
+        top: 6px !important;
+        right: 8px !important;
+        width: auto !important; /* 防止被拉伸 */
+        height: auto !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #D4BEBE !important;
+        font-size: 14px !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+    }
+    #transfer-actions-modal .cancel-btn:hover {
+        color: #9E7E7E !important;
+    }
+</style>
