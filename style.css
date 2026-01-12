@@ -10668,58 +10668,52 @@ body .memory-card .content {
     /* --- 字体引入 --- */
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&display=swap');
 
-    /* 【第一步：暴力清洗外层容器】 
-       针对 #transfer-actions-modal 这个ID，强制去掉它身上可能存在的
-       所有背景、阴影和边框，防止“粉色光晕”是它带来的。
-    */
+    /* --- 暴力清洗外层容器 (保持不变) --- */
     #transfer-actions-modal,
     #transfer-actions-modal.modal {
         box-shadow: none !important;
-        background: rgba(0, 0, 0, 0.4) !important; /* 保持半透明遮罩，或者改成 transparent 如果你不需要遮罩 */
+        background: rgba(0, 0, 0, 0.4) !important;
         border: none !important;
         outline: none !important;
     }
 
-    /* 【第二步：精修内层卡片】
-       使用 ID + class 的组合 (#transfer-actions-modal .transfer-actions-content)
-       确保权重最高，没人能覆盖它！
-    */
+    /* --- 卡片主体：放大一圈，依然精致 --- */
     #transfer-actions-modal .transfer-actions-content {
-        /* 1. 尺寸：精致小巧版 */
-        width: 220px !important;
-        max-width: 90vw !important; /* 防止在极小屏幕溢出 */
+        /* 1. 宽度升级：220px -> 260px */
+        width: 260px !important;
+        max-width: 90vw !important;
         
-        /* 2. 背景与边框：去油去光，只要干净的线条 */
-        background-color: #FFF9F9 !important; /* 纯净腮红白 */
-        background-image: none !important;    /* 防止有背景图干扰 */
-        border: 1px solid #E6DCDC !important; /* 极细的高级灰粉边框 */
-        border-radius: 6px !important;
-        box-shadow: none !important;          /* 再次强调：不要阴影！ */
+        /* 2. 背景与边框：保持之前的清爽高级感 */
+        background-color: #FFF9F9 !important; 
+        background-image: none !important;
+        border: 1px solid #E6DCDC !important; 
+        border-radius: 8px !important; /* 圆角配合尺寸稍微加大一点点 */
+        box-shadow: none !important;
         
-        /* 3. 布局 */
-        margin: auto !important; /* 确保居中 */
-        padding: 16px 12px !important;
+        /* 3. 布局：增加留白 */
+        margin: auto !important;
+        padding: 24px 20px !important; /* 内边距加宽，呼吸感更强 */
         box-sizing: border-box !important;
         font-family: "Noto Serif SC", serif !important;
         position: relative !important;
         text-align: center !important;
     }
 
-    /* --- 标题 --- */
+    /* --- 标题：字号加大 --- */
     #transfer-actions-modal .transfer-actions-header {
-        font-size: 13px !important;
+        font-size: 15px !important; /* 13px -> 15px */
         font-weight: 700 !important;
         color: #5A4E46 !important;
-        margin-bottom: 12px !important;
+        margin-bottom: 16px !important; /* 间距拉开 */
         text-shadow: none !important;
     }
 
-    /* --- 内容文字 --- */
+    /* --- 正文：字号加大 --- */
     #transfer-actions-modal .transfer-actions-body p {
-        font-size: 11px !important;
+        font-size: 13px !important; /* 11px -> 13px */
         color: #8D7B7B !important;
-        margin: 0 0 16px 0 !important;
-        line-height: 1.5 !important;
+        margin: 0 0 20px 0 !important; /* 底部间距拉开 */
+        line-height: 1.6 !important;
     }
 
     /* --- 名字高亮 --- */
@@ -10733,8 +10727,8 @@ body .memory-card .content {
     #transfer-actions-modal .transfer-actions-footer {
         display: flex !important;
         justify-content: space-between !important;
-        gap: 8px !important;
-        padding: 0 !important; /* 确保没有内边距干扰 */
+        gap: 12px !important; /* 按钮间距加大 */
+        padding: 0 !important;
         margin: 0 !important;
     }
 
@@ -10743,9 +10737,9 @@ body .memory-card .content {
         flex: 1 !important;
         height: auto !important;
         line-height: 1.5 !important;
-        border-radius: 4px !important;
-        padding: 5px 0 !important;
-        font-size: 11px !important;
+        border-radius: 5px !important;
+        padding: 6px 0 !important; /* 按钮高度增加 */
+        font-size: 12px !important; /* 11px -> 12px */
         font-family: "Noto Serif SC", serif !important;
         cursor: pointer !important;
         transition: all 0.2s ease !important;
@@ -10753,7 +10747,7 @@ body .memory-card .content {
         outline: none !important;
     }
 
-    /* 1. 残忍拒绝：描边清透版 */
+    /* 1. 残忍拒绝 */
     #transfer-actions-modal .action-btn.decline {
         background: transparent !important;
         border: 1px solid #D4BEBE !important;
@@ -10765,7 +10759,7 @@ body .memory-card .content {
         border-color: #9E7E7E !important;
     }
 
-    /* 2. 开心收下：实心版 */
+    /* 2. 开心收下 */
     #transfer-actions-modal .action-btn.accept {
         background: #9E7E7E !important;
         border: 1px solid #9E7E7E !important;
@@ -10779,15 +10773,13 @@ body .memory-card .content {
     /* --- 关闭按钮 X --- */
     #transfer-actions-modal .cancel-btn {
         position: absolute !important;
-        top: 6px !important;
-        right: 8px !important;
-        width: auto !important; /* 防止被拉伸 */
-        height: auto !important;
+        top: 8px !important;
+        right: 10px !important; /* 位置微调 */
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         color: #D4BEBE !important;
-        font-size: 14px !important;
+        font-size: 16px !important; /* 稍微大一点点 */
         cursor: pointer !important;
         padding: 0 !important;
     }
