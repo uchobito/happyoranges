@@ -1,23 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <script>
-  // 魔法拦截器：自动把 AI 的错误嵌套格式转回老格式
-  (function() {
-      var originalParse = JSON.parse;
-      JSON.parse = function(text, reviver) {
-          var data = originalParse(text, reviver);
-          try {
-              if (data && typeof data === 'object' && data.type === 'text' && data.quote_reply) {
-                  data.type = 'quote_reply';
-                  data.target_timestamp = data.quote_reply.target_timestamp;
-                  data.reply_content = data.quote_reply.reply_content;
-              }
-          } catch(e) {}
-          return data;
-      };
-  })();
-  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>EPhone</title>
