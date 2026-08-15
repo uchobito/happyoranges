@@ -10679,20 +10679,15 @@ body .memory-card .content {
 
     /* --- 卡片主体：放大一圈，依然精致 --- */
     #transfer-actions-modal .transfer-actions-content {
-        /* 1. 宽度升级：220px -> 260px */
         width: 260px !important;
         max-width: 90vw !important;
-        
-        /* 2. 背景与边框：保持之前的清爽高级感 */
         background-color: #FFF9F9 !important; 
         background-image: none !important;
         border: 1px solid #E6DCDC !important; 
-        border-radius: 8px !important; /* 圆角配合尺寸稍微加大一点点 */
+        border-radius: 8px !important; 
         box-shadow: none !important;
-        
-        /* 3. 布局：增加留白 */
         margin: auto !important;
-        padding: 24px 20px !important; /* 内边距加宽，呼吸感更强 */
+        padding: 24px 20px !important; 
         box-sizing: border-box !important;
         font-family: "Noto Serif SC", serif !important;
         position: relative !important;
@@ -10701,18 +10696,18 @@ body .memory-card .content {
 
     /* --- 标题：字号加大 --- */
     #transfer-actions-modal .transfer-actions-header {
-        font-size: 15px !important; /* 13px -> 15px */
+        font-size: 15px !important; 
         font-weight: 700 !important;
         color: #5A4E46 !important;
-        margin-bottom: 16px !important; /* 间距拉开 */
+        margin-bottom: 16px !important; 
         text-shadow: none !important;
     }
 
     /* --- 正文：字号加大 --- */
     #transfer-actions-modal .transfer-actions-body p {
-        font-size: 13px !important; /* 11px -> 13px */
+        font-size: 13px !important; 
         color: #8D7B7B !important;
-        margin: 0 0 20px 0 !important; /* 底部间距拉开 */
+        margin: 0 0 20px 0 !important; 
         line-height: 1.6 !important;
     }
 
@@ -10727,7 +10722,7 @@ body .memory-card .content {
     #transfer-actions-modal .transfer-actions-footer {
         display: flex !important;
         justify-content: space-between !important;
-        gap: 12px !important; /* 按钮间距加大 */
+        gap: 12px !important; 
         padding: 0 !important;
         margin: 0 !important;
     }
@@ -10738,8 +10733,8 @@ body .memory-card .content {
         height: auto !important;
         line-height: 1.5 !important;
         border-radius: 5px !important;
-        padding: 6px 0 !important; /* 按钮高度增加 */
-        font-size: 12px !important; /* 11px -> 12px */
+        padding: 6px 0 !important; 
+        font-size: 12px !important; 
         font-family: "Noto Serif SC", serif !important;
         cursor: pointer !important;
         transition: all 0.2s ease !important;
@@ -10774,32 +10769,31 @@ body .memory-card .content {
     #transfer-actions-modal .cancel-btn {
         position: absolute !important;
         top: 8px !important;
-        right: 10px !important; /* 位置微调 */
+        right: 10px !important; 
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         color: #D4BEBE !important;
-        font-size: 16px !important; /* 稍微大一点点 */
+        font-size: 16px !important; 
         cursor: pointer !important;
         padding: 0 !important;
     }
     #transfer-actions-modal .cancel-btn:hover {
         color: #9E7E7E !important;
     }
-</style>
 
-<style>
-    /* --- 替换指定的旧图片为小兔子 --- */
-    img[src="https://i.postimg.cc/KYr2qRCK/1.jpg"] {
+    /* ================= 新加的代码放在这里，要在 </style> 的上面 ================= */
+    
+    /* --- 替换指定的旧图片为小兔子（聊天界面等） --- */
+    img[src*="KYr2qRCK/1.jpg"] {
         content: url("https://img.baibai.cv/f/x6kBtM/bunny.jpg") !important;
         object-fit: cover !important; 
     }
-</style>
 
-<style>
-    /* --- 替换 Qzone 动态正文里的特定旧图片 --- */
-    .post-main-content img[src="https://i.postimg.cc/KYr2qRCK/1.jpg"] {
+    /* --- 替换 Qzone 动态正文里的特定旧图片（小猫咪） --- */
+    .post-main-content img[src*="KYr2qRCK/1.jpg"] {
         content: url("https://img.baibai.cv/f/on6wUO/kitten.jpg") !important;
         object-fit: cover !important; 
     }
+    
 </style>
