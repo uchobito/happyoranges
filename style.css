@@ -11317,4 +11317,593 @@ border-top: none !important;
     text-align: center !important; /* 水平居中 */
 }
 
+/* 只往下移动右侧的“更多操作”三个点按钮 */
+#qzone-more-actions-btn {
+    position: relative !important;
+    top: 3.5px !important; /* 你可以修改这个数值，越大越往下（例如改成 6px, 8px 等） */
+    
+    /* 为了保证三个点居中好看，你也可以加上这行让它垂直方向对齐更好看：*/
+    display: inline-block !important; 
+}
+
+/* 移除动态评论默认词 */
+.comment-input::placeholder {
+    color: transparent;
+}
+
+/* ========================= 
+       聊天列表顶栏区域       
+========================= */
+
+/* 顶栏 */
+#chat-list-screen > .header {
+    background: #ffffff !important;
+    height: 124px !important; 
+    border-bottom: none !important;
+    clip-path: inset(0px 0px 5px 0px) !important; /* 纯视觉截断下方 5px，像个遮罩一样，里面的所有元素保证纹丝不动！只在 chatlist 界面生效 */
+}
+
+/* 隐藏标题 */
+#chat-list-title {
+    position: relative !important;
+    top: -38px !important;
+    left: 46px !important;
+    opacity: 0 !important;
+}
+
+/* 隐藏原有内容 */
+#chat-list-screen .header .back-btn svg,
+#add-group-chat-btn svg,
+#add-chat-btn svg {
+    display: none !important;
+}
+
+/* 返回 */
+#chat-list-screen > .header .back-btn {
+    position: relative !important;
+    width: 40px !important;
+    height: 40px !important;
+    top: -38px !important;
+    right: 0 !important;
+    font-size: 0px !important;
+}
+
+#chat-list-screen > .header .back-btn::after {
+  content: "ビロードのうさぎ" !important;
+  position: absolute !important;
+  top: 60px !important;
+  left: -3.5px !important;
+  font-weight: 600 !important;
+  font-size: 22px !important;
+  font-family: "PingFang SC", sans-serif !important;
+  color: #000 !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+}
+
+#chat-list-screen > .header .back-btn::before {
+  content: "ぺったん、ぺったんと、お餅をついているよ。" !important;
+  position: absolute !important;
+  top: 92px !important;
+  left: 0px !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  font-family: "PingFang SC", sans-serif !important;
+  color: #777 !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+}
+
+/* 创建群聊 */
+#add-group-chat-btn {
+    width: 40px !important;
+    height: 40px !important;
+    position: relative !important;
+    top: -38px !important;
+    right: 5.5px !important;
+}
+
+/* 创建角色 */
+#add-chat-btn {
+    width: 40px !important;
+    height: 40px !important;
+    position: relative !important;
+    top: -38px !important;
+    right: -10px !important;
+    opacity: 0 !important;
+}
+
+/* 右侧图标组 */
+#add-group-chat-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    top: -10px !important;
+    left: -27px !important;
+    width: 130px !important;
+    height: 60px !important;
+    background-image: url('https://i.postimg.cc/d1vQYFVs/IMG-8654.png') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    pointer-events: none !important;
+}
+
+/* 顶栏大头像 */
+#add-group-chat-btn::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 57.5px !important;
+    left: 48.5px !important;
+    width: 56px !important;
+    height: 56px !important;
+    border: 0.6px solid #e3e3e3 !important;
+    border-radius: 50% !important;
+    background-image: url('https://img.baibai.cv/f/jqnyhX/IMG_0348.jpeg') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    pointer-events: none !important;
+}
+
+/* =========================
+         聊天列表  
+ ========================= */
+/* 列表页面 */
+#chat-list {
+    flex-grow: 1;
+    background-color: #ffffff;
+    padding-top: 280px;
+    padding-bottom: 90px;
+    box-sizing: border-box;
+}
+
+/* 搜索框 */
+#chat-list::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 190px !important;
+  left: 17px !important;
+  right: 17px !important;
+  width: auto !important;
+  height: 38px !important;
+  border-radius: 20px !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+  background:        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") left 15px center / 14px 14px no-repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='20'><text x='1' y='16.5' font-size='20' font-weight='500' fill='%23b6b6b6' font-family='PingFang SC'>検索</text></svg>") left 35px center / 42px 14px no-repeat,
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgb(182,182,182)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 7V5c0-1.1.9-2 2-2h2m10 0h2c1.1 0 2 .9 2 2v2m0 10v2c0 1.1-.9 2-2 2h-2M7 21H5c-1.1 0-2-.9-2-2v-2M3 12h18'></path></svg>") right 16px center / 18px 18px no-repeat,
+    
+    #f5f5f5 !important;
+}
+
+/* 两侧文字 */
+#chat-list::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 237px !important;
+  left: 17px !important;
+  right: 17px !important;
+  width: auto !important;
+  height: 36px !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  background:   url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='36'><text x='0' y='24' font-size='14' font-weight='700' fill='%23000' font-family='PingFang SC'>友だちリスト</text></svg>") left 2px center no-repeat,    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='36'><text x='80' y='24.5' font-size='13' font-weight='normal' fill='%238c8c92' font-family='PingFang SC' text-anchor='end'>すべて見る</text></svg>") right center no-repeat !important;
+}
+
+
+/* 列表项 */
+.chat-list-item {
+    padding: 7px 15px;
+    border-radius: 0 !important;
+    margin: 0 17px !important;
+    border: none !important;
+    background: #ffffff !important;
+}
+
+.chat-list-item:not(.pinned):not(.chat-list-item:not(.pinned) + .chat-list-item) {
+    border-radius: 16px 16px 0 0 !important;
+    margin: 5px 17px 0 17px !important;
+    border-top: 1px solid rgba(0,0,0,0.12) !important;
+    border-left: 1px solid rgba(0,0,0,0.12) !important;
+    border-right: 1px solid rgba(0,0,0,0.12) !important;
+}
+
+.chat-list-item:not(.pinned):not(:has(+ .chat-list-item:not(.pinned))) {
+    border-radius: 0 0 16px 16px !important;
+    margin: 0 17px 16px 17px !important;
+    border-bottom: 1px solid rgba(0,0,0,0.12) !important;
+    border-left: 1px solid rgba(0,0,0,0.12) !important;
+    border-right: 1px solid rgba(0,0,0,0.12) !important;
+}
+
+
+.chat-list-item:not(.pinned):not(.chat-list-item:not(.pinned) + .chat-list-item):not(:has(+ .chat-list-item:not(.pinned))) {
+    border-radius: 16px !important;
+    margin: 16px 17px !important;
+    border: 1px solid rgba(0,0,0,0.12) !important;
+}
+
+.chat-list-item:not(.pinned):has(+ .chat-list-item:not(.pinned)):not(:not(.chat-list-item:not(.pinned) + .chat-list-item)) {
+    border-left: 1px solid rgba(0,0,0,0.12) !important;
+    border-right: 1px solid rgba(0,0,0,0.12) !important;
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+.chat-list-item:hover {
+    background-color: transparent !important;
+}
+
+.chat-list-item:active {
+  background-color: #f5f5f5 !important;
+  transition: background-color 0.02s ease !important;
+}
+
+/* 置顶项 */
+.chat-list-item.pinned {
+    position: relative !important;
+    background: #ffffff !important;
+    margin: 0 17px !important;
+    border-left: 1px solid rgba(0,0,0,0.12) !important;
+    border-right: 1px solid rgba(0,0,0,0.12) !important;
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+/* 置顶星星 */
+.chat-list-item.pinned::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 48% !important;
+  transform: translateY(-50%) !important;
+  right: 17px !important; 
+  width: 18px !important;
+  height: 18px !important;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23999' d='M11.39 3.12c.28-.65 1.15-.65 1.43 0l2.36 5.37c.12.28.38.47.69.5l5.96.6c.71.07.99.95.46 1.43l-4.51 4.09c-.23.2-.33.51-.26.8l1.32 5.86c.16.71-.62 1.25-1.23.86L12.4 19.6c-.27-.18-.6-.18-.87 0l-5.18 3.03c-.61.39-1.39-.15-1.23-.86l1.32-5.86c.07-.29-.03-.6-.26-.8L1.67 11.02c-.53-.48-.25-1.36.46-1.43l5.96-.6c.31-.03.57-.22.69-.5z'/></svg>") center center / contain no-repeat !important;
+  z-index: 5 !important;
+}
+
+.chat-list-item.pinned:not(.pinned + .pinned) {
+    border-top: 1px solid rgba(0,0,0,0.12) !important;
+    border-radius: 16px 16px 0 0 !important;
+    margin-top: 5px !important;
+}
+
+.chat-list-item.pinned:not(:has(+ .pinned)) {
+    border-bottom: 1px solid rgba(0,0,0,0.12) !important;
+    border-radius: 0 0 16px 16px !important;
+    margin-bottom: 16px !important;
+}
+
+.chat-list-item.pinned:not(.pinned + .pinned):not(:has(+ .pinned)) {
+    border: 1px solid rgba(0,0,0,0.12) !important;
+    border-radius: 16px !important;
+    margin: 16px 17px !important;
+}
+
+/* 好友分组样式 */
+/* 分组容器 */
+.chat-group-container {
+    border-bottom: none;
+}
+
+.chat-group-container:first-child {
+    border-top: none;
+}
+
+.chat-group-container {
+    margin-bottom: 16px !important;
+}
+
+/* 分组标题栏 */
+.chat-group-header {
+    position: relative !important;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    cursor: pointer;
+    background-color: #ffffff;
+    margin: 0 17px 0 17px !important;  
+    border-radius: 12px !important;
+    border: 1px solid rgba(0,0,0,0.12) !important;  
+}
+
+/* 分组项 */
+.chat-group-content .chat-list-item {
+    margin: 0 17px !important;      
+}
+
+/* 隐藏分组原有箭头图标 */
+.chat-group-header .arrow {
+    display: none !important;
+}
+
+.chat-group-header::after {
+    content: "" !important;
+    display: inline-block !important;
+    position: absolute !important;
+    right: 15px !important;       
+    top: 50% !important;
+    transform: translateY(-50%) rotate(0deg);  
+    width: 22px !important;
+    height: 22px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 14L12 9L17 14' stroke='%23ccc' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    transition: transform 0.2s ease;
+}
+
+/* 收起状态 */
+.chat-group-header.collapsed::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+/* 分组名称样式 */
+.chat-group-header .group-name {
+    position: relative !important;
+    left: 2px !important;
+    color: #333;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+/* 列表头像 */
+.chat-list-item .avatar {
+    position: relative !important;
+    top: 1px !important;
+    right: -2px !important;
+    width: 42px;
+    height: 42px;
+    border-radius: 50% !important;
+}
+
+/* 昵称 */
+.chat-list-item .name {
+    position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    font-size: 15.5px !important;
+    font-weight: 500;
+    color: #333;
+}
+
+/* 隐藏 最后一条消息 */
+.chat-list-item .last-msg {
+  font-size: 0 !important;
+  color: transparent !important;
+  position: relative !important;
+}
+
+/* 群聊标签 */
+.chat-list-item .group-tag {
+    font-size: 0 !important;
+    color: transparent !important;
+    background-color: transparent !important;
+}
+
+.chat-list-item .group-tag::before {
+    content: "グループ" !important;
+    position: relative !important;
+    top: 0px !important;
+    right: 4px !important;
+    font-size: 7px !important;
+    color: #ffffff !important;
+    font-family: "PingFang SC", sans-serif !important;
+    letter-spacing: 0.3px !important;
+    display: inline-block !important;
+    background-color: #333 !important;
+    padding: 1px 5px !important;
+    border-radius: 4px !important;
+    font-weight: 500 !important;
+}
+
+
+.unread-count-wrapper {
+    flex-shrink: 0 !important;
+    width: 40px !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    padding-top: 0 !important; 
+    margin-right: -8px !important;
+}
+
+/* 列表未读 */
+.unread-count {
+    min-width: 15px !important;
+    height: 15px !important;
+    padding: 4px 4px !important;
+    background-color: #333 !important; 
+    color: white !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 15px !important;
+    text-align: center !important;
+    border-radius: 50px !important; 
+    box-shadow: none !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/* 动态未读 */
+[data-view="qzone-screen"] .unread-indicator {
+    position: absolute !important;
+    top: -13px !important;      
+    right: -22px !important;    
+    min-width: 15px !important;
+    height: 15px !important;
+    padding: 2px 2px !important;
+    background-color: #333 !important;
+    color: white !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 15px !important;
+    text-align: center !important;
+    border-radius: 50px !important;
+    box-shadow: none !important;
+    z-index: 1 !important;
+}
+
+
+/* =========================
+          底栏部分
+ ========================= */
+
+/* 底栏 */
+#chat-list-bottom-nav {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    width: 100%;
+    z-index: 15;
+    display: flex;
+    border-top: none;
+    background-color: #ffffff;
+    height: 84px !important;       
+    box-sizing: border-box;
+    box-shadow: 0 -3px 6px rgba(0, 0, 0, 0.05) !important; 
+}
+
+/* 5个导航项通用样式 */
+.nav-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: color 0.2s;
+    padding: 8px 0;
+}
+
+/* 消息 */
+#chat-list-bottom-nav .nav-item[data-view="messages-view"] {
+    position: relative !important;
+    top: 9px !important;  
+    left: 0px !important;  
+    background: url('https://i.postimg.cc/2Swk0QhS/IMG-8696.png') center/contain no-repeat !important;
+    font-size: 0 !important;       
+    color: transparent !important;
+    width: 5px !important;
+    height: 5px !important;
+    display: inline-block !important;
+}
+
+#chat-list-bottom-nav .nav-item[data-view="messages-view"]::after {
+    content: "ホーム" !important;
+    position: absolute !important;
+    bottom: -15px !important;  
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    font-size: 9px !important;
+    font-family: "PingFang SC", sans-serif !important;
+    color: #333 !important;
+    font-weight: 400;
+    white-space: nowrap !important;
+    pointer-events: none !important;
+}
+
+/* 动态 */
+#chat-list-bottom-nav .nav-item[data-view="qzone-screen"] {
+    position: relative !important;
+    top: 9px !important;  
+    left: 0px !important;  
+    background: url('https://i.postimg.cc/8zHpZRMC/IMG-8695.png') center/contain no-repeat !important;
+    font-size: 0 !important;       
+    color: transparent !important;
+    width: 5px !important;
+    height: 5px !important;
+    display: inline-block !important;
+}
+
+#chat-list-bottom-nav .nav-item[data-view="qzone-screen"]::after {
+    content: "トーク" !important;
+    position: absolute !important;
+    bottom: -15px !important;  
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    font-size: 9px !important;
+    font-family: "PingFang SC", sans-serif !important;
+    color: #333 !important;
+    white-space: nowrap !important;
+    pointer-events: none !important;
+}
+
+/* 回忆 */
+#chat-list-bottom-nav .nav-item[data-view="memories-view"] {
+    position: relative !important;
+    top: 9px !important;  
+    left: 0px !important;  
+    background: url('https://i.postimg.cc/SxrSg6CR/IMG-8693.png') center/contain no-repeat !important;
+    font-size: 0 !important;       
+    color: transparent !important;
+    width: 5px !important;
+    height: 5px !important;
+    display: inline-block !important;
+}
+
+#chat-list-bottom-nav .nav-item[data-view="memories-view"]::after {
+    content: "Voom" !important;
+    position: absolute !important;
+    bottom: -15px !important;  
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    font-size: 9px !important;
+    font-family: "PingFang SC", sans-serif !important;
+    color: #333 !important;
+    white-space: nowrap !important;
+    pointer-events: none !important;
+}
+
+/* 收藏 */
+#chat-list-bottom-nav .nav-item[data-view="favorites-view"] {
+    position: relative !important;
+    top: 9px !important;  
+    left: 0px !important;  
+    background: url('https://i.postimg.cc/3Jw9G18F/IMG-8975.png') center/contain no-repeat !important;
+    font-size: 0 !important;       
+    color: transparent !important;
+    width: 5px !important;
+    height: 5px !important;
+    display: inline-block !important;
+}
+
+#chat-list-bottom-nav .nav-item[data-view="favorites-view"]::after {
+    content: "ニュース" !important;
+    position: absolute !important;
+    bottom: -15px !important;  
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    font-size: 9px !important;
+    font-family: "PingFang SC", sans-serif !important;
+    color: #333 !important;
+    white-space: nowrap !important;
+    pointer-events: none !important;
+}
+
+/* NPC */
+#chat-list-bottom-nav .nav-item[data-view="npc-list-view"] {
+    position: relative !important;
+    top: 9px !important;  
+    left: 0px !important;  
+    background: url('https://i.postimg.cc/htrD2LTX/IMG-8692.png') center/contain no-repeat !important;
+    font-size: 0 !important;       
+    color: transparent !important;
+    width: 5px !important;
+    height: 5px !important;
+    display: inline-block !important;
+}
+
+#chat-list-bottom-nav .nav-item[data-view="npc-list-view"]::after {
+    content: "ウォレット" !important;
+    position: absolute !important;
+    bottom: -15px !important;  
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    font-size: 9px !important;
+    font-family: "PingFang SC", sans-serif !important;
+    color: #333 !important;
+    white-space: nowrap !important;
+    pointer-events: none !important;
+}
+
 </style>
