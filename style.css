@@ -10305,10 +10305,17 @@ body.minimal-chat-ui-active.chat-actions-expanded #chat-interface-screen #chat-m
         line-height: 1.3 !important; /* 稍微收紧行高 */
         margin: 0 !important;
         
-        /* 下划线距离也收紧一点 */
+     /* 下划线距离也收紧一点 */
         border-bottom: 2px solid #F0EBE5 !important;
         padding-bottom: 2px !important; 
         display: inline-block !important; 
+        
+    /* 【新增】超出10个字显示省略号 */
+        max-width: 10em !important; /* 限制最大宽度为10个字的宽度 */
+        white-space: nowrap !important; /* 强制在一行显示，不换行 */
+        overflow: hidden !important; /* 超出宽度的部分隐藏 */
+        text-overflow: ellipsis !important; /* 隐藏的部分用省略号代替 */
+        vertical-align: bottom !important; /* 防止截断导致下划线位置偏移 */
     }
 
     /* 礼物数量 */
@@ -10795,5 +10802,683 @@ body .memory-card .content {
         content: url("https://img.baibai.cv/f/on6wUO/kitten.jpg") !important;
         object-fit: cover !important; 
     }
+
+    /* --- 转账卡片 (280px 玫瑰腮红配色版) --- */
+.transfer-content {
+    width: 280px !important; 
+    background: #FFF9F9 !important; /* 极淡的腮红白 */
+    padding: 20px !important; 
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(130, 100, 100, 0.08) !important;
+    border: 1px solid rgba(0,0,0,0.03) !important;
+    box-sizing: border-box !important;
+    font-family: "Noto Serif SC", "Songti SC", serif !important; 
+}
+
+/* 标题 */
+.transfer-header {
+    font-size: 16px !important; 
+    font-weight: 700 !important;
+    color: #5A4E46 !important; 
+    -webkit-text-fill-color: #5A4E46 !important; 
+    text-align: center !important;
+    margin-bottom: 18px !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* 输入框组容器 */
+.transfer-input-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important; 
+    margin-bottom: 14px !important;
+}
+
+/* 标签文字 */
+.transfer-input-group label {
+    font-size: 12px !important; 
+    color: #8D7B7B !important; 
+    font-weight: 600 !important;
+    font-family: sans-serif !important; 
+}
+
+/* 输入框 */
+.transfer-input-group input {
+    height: 38px !important; /* 稍微加高一点点配合16px字体 */
     
+    /* 【核心修复】强制16px，防止手机端点击输入时页面自动放大！ */
+    font-size: 16px !important; 
+    
+    padding: 0 10px !important; 
+    border: 1px solid #EEDDDD !important; 
+    border-radius: 6px !important;
+    background: #FFFFFF !important;
+    color: #5A4E46 !important;
+    outline: none !important;
+    transition: border-color 0.2s ease !important;
+    box-sizing: border-box !important;
+    font-family: sans-serif !important;
+}
+
+/* 输入框焦点状态 */
+.transfer-input-group input:focus {
+    border-color: #C0A8A8 !important; 
+}
+
+/* 输入框的 placeholder */
+.transfer-input-group input::placeholder {
+    color: #C0B0B0 !important;
+    font-size: 14px !important;
+}
+
+/* 底部按钮区域 */
+.transfer-actions {
+    display: flex !important;
+    gap: 10px !important; 
+    margin-top: 20px !important;
+    padding-top: 16px !important;
+    border-top: 1px dashed #EEDDDD !important; 
+}
+
+/* 通用按钮样式 */
+.transfer-actions button {
+    flex: 1 !important;
+    height: 38px !important; 
+    font-size: 14px !important; 
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    border: none !important;
+    cursor: pointer !important;
+    outline: none !important;
+    transition: opacity 0.2s !important;
+    padding: 0 !important;
+    font-family: sans-serif !important;
+}
+
+.transfer-actions button:active {
+    opacity: 0.7 !important;
+}
+
+/* 取消按钮 */
+#transfer-cancel-btn {
+    background: #F7F0F0 !important; 
+    color: #8D7B7B !important;
+}
+
+/* 确认转账按钮 */
+#transfer-confirm-btn {
+    background: #9E7E7E !important; 
+    color: #FFFFFF !important;
+}
+
+/* --- 外卖订单卡片 (严格防污染 + 完美对齐 + 票据配色版) --- */
+
+/* 1. 严格锁定该弹窗，绝不影响全局界面的任何颜色和字体 */
+#waimai-request-modal .modal-content {
+    /* 强制覆盖 HTML 中写死的 290px，让比例更精致，如果想保留 290px 可以直接删掉这行 */
+    width: 280px !important; 
+    
+    background: #FFFCFA !important; /* 蛋壳白 */
+    padding: 20px !important; /* 舒适的四周边界，不宽也不窄 */
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(100, 90, 80, 0.08) !important; 
+    border: 1px solid rgba(0,0,0,0.04) !important;
+    box-sizing: border-box !important;
+    font-family: "Noto Serif SC", "Songti SC", serif !important;
+}
+
+/* 2. 标题 */
+#waimai-request-modal .modal-header {
+    font-size: 16px !important; 
+    font-weight: 700 !important;
+    color: #5A4E46 !important; 
+    text-align: center !important;
+    margin-bottom: 20px !important; 
+    padding: 0 !important;
+    border: none !important;
+}
+
+/* 3. 表单主体 */
+#waimai-request-modal .modal-body {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important; /* 商品信息和订单金额中间的合理间距 */
+    margin-bottom: 20px !important; 
+    padding: 0 !important;
+}
+
+/* 输入框组 */
+#waimai-request-modal .form-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important; /* 标题和输入框的间距 */
+    margin: 0 !important;
+}
+
+/* 标签文字 (大字号、突出层级) */
+#waimai-request-modal .form-group label {
+    font-size: 14px !important; 
+    color: #5A4E46 !important; 
+    font-weight: 700 !important; /* 加粗，突出标题 */
+    font-family: sans-serif !important;
+    margin: 0 !important;
+}
+
+/* 输入框 */
+#waimai-request-modal .form-group input {
+    height: 40px !important; 
+    width: 100% !important; /* 强制拉满，作为对齐基准 */
+    font-size: 16px !important; /* 保持16px防苹果手机自动缩放 */
+    padding: 0 10px !important;
+    border: 1px solid #E0DCD6 !important; 
+    border-radius: 6px !important;
+    background: transparent !important;
+    color: #5A4E46 !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+    font-family: sans-serif !important;
+    margin: 0 !important;
+}
+
+/* 输入框默认语 (小字号、不喧宾夺主) */
+#waimai-request-modal .form-group input::placeholder {
+    font-size: 13px !important; /* 比标题的14px小，层级分明 */
+    color: #CFCAC2 !important;
+}
+
+/* 4. 底部按钮区域 */
+#waimai-request-modal .modal-footer {
+    display: flex !important;
+    width: 100% !important; 
+    gap: 12px !important; /* 两个按钮之间的间距 */
+    margin: 0 !important;
+    padding: 16px 0 0 0 !important; 
+    border-top: 1px dashed #E0DCD6 !important; 
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-sizing: border-box !important;
+}
+
+/* 按钮 */
+#waimai-request-modal .modal-footer button {
+    flex: 1 !important; /* 利用 flex: 1 均分空间，保证最左和最右和上面输入框完美对齐 */
+    height: 40px !important; 
+    font-size: 14px !important; 
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    border: none !important;
+    cursor: pointer !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-family: sans-serif !important;
+    box-sizing: border-box !important;
+}
+
+/* 为TA点单按钮 */
+#waimai-request-modal #waimai-order-for-ai-btn {
+    background: #F2F1EF !important; 
+    color: #8C8279 !important; 
+}
+
+/* 发起请求按钮 */
+#waimai-request-modal #waimai-confirm-btn {
+    background: #5A4E46 !important; 
+    color: #FFFCFA !important; 
+}
+
+/* 这是对表情面板按钮的通用设置，统一大小和样式 */
+#sticker-panel-header .panel-btn {
+    font-size: 0 !important; /* 强制隐藏所有原始文字 */
+    color: transparent !important;
+    width: 35px; /* 设置一个统一的宽度 */
+    height: 35px; /* 设置一个统一的高度 */
+    padding: 0; /* 移除内边距，让图片完全填充 */
+    background-size: cover; /* 确保背景图完全覆盖按钮 */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* 1. “取消”按钮 */
+#close-sticker-panel-btn {
+    background-image: url('https://file.zhuyitai.com/feedback/202511/01/49de58e606103102a42864ec5e5d35b1.png'); 
+}
+
+/* 2. “分类”按钮 */
+#manage-sticker-categories-btn {
+    background-image: url('https://static.woshipm.com/views/woshipm_api_def_20251101201836_7073.png');
+}
+
+/* 3. “管理”按钮 */
+#manage-stickers-btn {
+    background-image: url('https://kycloud4.koyoo.cn/202511011e018202511012015019748.png');
+}
+
+/* 4. “批量”按钮 */
+#add-sticker-batch-btn {
+    background-image: url('https://kycloud4.koyoo.cn/20251101e2d9d202511012015061349.png');
+}
+
+/* 5. “上传”按钮 */
+#upload-sticker-btn {
+    background-image: url('https://i.postimg.cc/Z5DmT90X/06.png');
+}
+
+/* === 新增：移除顶栏与底栏的分割线 === */
+
+/* 移除顶栏下方的线 */
+.header, .qzone-header {
+border-bottom: none !important;
+}
+
+/* 移除底部导航栏上方的线 */
+#chat-list-bottom-nav {
+border-top: none !important;
+}
+
+/* 2. 将悬浮在上面的列表行和分组标题“透明化” */
+#chat-list,
+.chat-list-item-content,
+.chat-group-header {
+  background-color: transparent !important;
+}
+
+/* 3. 去掉每一行之间的分割线 */
+.chat-list-item-swipe-container,
+.chat-group-container {
+  border: none !important;
+}
+
+/* ▼▼▼ 消息列表美化：移除分割线 ▼▼▼ */
+/* ========================================= */
+
+/* 1. 移除消息列表项底部的边框 */
+.chat-list-item {
+    border-bottom: none !important;
+}
+
+/* 2. (可选) 如果您想连群聊分组标题下的线也去掉，可以加上这句 */
+.chat-group-header {
+    border-bottom: none !important;
+}
+
+/* 3. (可选) 适配暗黑模式，确保彻底清除 */
+#phone-screen.dark-mode .chat-list-item,
+#phone-screen.dark-mode .chat-group-header {
+    border-bottom: none !important;
+}
+
+/* --- 1. 顶栏：透明悬浮 & 布局防溢出 (这是第二版的布局修正) --- */
+#qzone-screen .qzone-header {
+   /* 核心定位：脱离文档流，悬浮在图片上 */
+   position: absolute !important;
+   top: 0;
+   left: 0;
+   z-index: 100;
+ 
+   /* 【关键修复】宽度控制：这一句就是把你右边按钮拉回来的功臣 */
+   width: 100% !important;
+   box-sizing: border-box !important;
+ 
+   /* 间距设定 */
+   padding: 15px 20px !important;
+   padding-top: calc(15px + env(safe-area-inset-top)) !important;
+ 
+   /* 视觉样式：彻底透明 */
+   background-color: transparent !important;
+   backdrop-filter: none !important;
+   -webkit-backdrop-filter: none !important;
+   border-bottom: none !important;
+   box-shadow: none !important;
+}
+ 
+/* 隐藏顶栏中间的“动态”标题 */
+#qzone-screen .qzone-header span:nth-child(2) {
+   display: none !important;
+}
+ 
+/* --- 2. 个人信息区域：右下角布局 (朋友圈核心风格) --- */
+#qzone-screen .qzone-user-info {
+   left: auto !important;          /* 释放左侧约束 */
+   right: 20px !important;         /* 紧贴右侧 */
+   bottom: -30px !important;       /* 悬挂在封面边缘 */
+ 
+   /* 关键布局：反转顺序（名字在左，头像在右） */
+   flex-direction: row-reverse !important;
+   align-items: flex-start !important;     /* 顶部对齐 */
+   gap: 15px !important;                   /* 两者间距 */
+}
+ 
+/* --- 3. 头像重塑：方形圆角 --- */
+#qzone-screen #qzone-avatar-img {
+   width: 70px !important;
+   height: 70px !important;
+   border-radius: 8px !important;      /* 微信标志性的小圆角 */
+   border: none !important;            /* 移除白色描边 */
+}
+ 
+/* --- 5. 其他调整 --- */
+#qzone-screen .qzone-edit-btn {
+   display: none !important;
+}
+ 
+/* 加高封面图容器 */
+#qzone-screen .qzone-banner-container {
+   height: 280px !important;
+}
+
+/* 3. 默认隐藏功能按钮 */
+#chat-input-actions-top .chat-action-icon-btn {
+    display: none !important;
+    opacity: 0 !important;
+    transform: scale(0.8) !important;
+    pointer-events: none !important;
+}
+
+/* 4. 菜单打开状态（保留底部间距 padding-bottom:60px） */
+#chat-input-actions-top.menu-open {
+    max-height: 500px !important;
+    overflow: hidden !important;
+    transform: scale(1) !important;
+
+    width: calc(100% - 20px) !important;
+    max-width: calc(100% - 20px) !important;
+    height: auto !important;
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    padding-bottom: 60px !important;  /* 为 iPhone 小横条留出空行高度 */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+    pointer-events: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) scale(1) !important;
+    bottom: 0px !important;
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 8px !important;
+    border: 1px solid #e0e0e0 !important;
+    align-items: start !important;
+}
+
+/* 5. 悬停状态（同步底部间距） */
+#chat-input-actions-top:hover {
+    max-height: 500px !important;
+    transform: translateX(-50%) scale(1) !important;
+
+    width: calc(100% - 20px) !important;
+    max-width: calc(100% - 20px) !important;
+    height: auto !important;
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 12px !important;
+    padding-bottom: 60px !important;  /* 为 iPhone 小横条留出空行高度 */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+    pointer-events: auto !important;
+    left: 50% !important;
+    bottom: 0px !important;
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 8px !important;
+    border: 1px solid #e0e0e0 !important;
+    align-items: start !important;
+}
+
+/* 鼠标悬停时让触发器隐藏（保持先前行为） */
+#chat-input-actions-top:hover::before {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* 6. 关键：禁用会参与 Grid 的伪元素占位（安全做法，保留触发功能） */
+#chat-input-actions-top.menu-open::after,
+#chat-input-actions-top:hover::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* 7. 菜单中真实按钮样式（不改功能，仅显现） */
+#chat-input-actions-top.menu-open .chat-action-icon-btn,
+#chat-input-actions-top:hover .chat-action-icon-btn {
+    display: flex !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    width: 100% !important;
+    height: 32px !important;
+    min-width: auto !important;
+    padding: 0 10px !important;
+    background: #f8f9fa !important;
+    border: 1px solid #e9ecef !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: #495057 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    position: relative !important;
+    margin: 0 !important;
+    z-index: 1002 !important;
+}
+
+/* 8. 占位类保持但不占 Grid（避免视觉空洞） */
+#chat-input-actions-top.menu-open .chat-action-icon-btn.placeholder,
+#chat-input-actions-top:hover .chat-action-icon-btn.placeholder {
+    visibility: hidden !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    position: absolute !important; /* 脱离 grid，不再占位 */
+}
+
+/* 9. 按钮悬停效果（保持原有视觉） */
+#chat-input-actions-top .chat-action-icon-btn:hover {
+    background: #e9ecef !important;
+    border-color: #dee2e6 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* 10. 响应式调整 - 小屏幕也显示5个 */
+@media (max-width: 480px) {
+    #chat-input-actions-top.menu-open,
+    #chat-input-actions-top:hover {
+        grid-template-columns: repeat(5, 1fr) !important;
+        width: calc(100% - 20px) !important;
+        max-width: calc(100% - 20px) !important;
+    }
+}
+
+/* 11. 输入框位置调整 & 图标 */
+#chat-input-area {
+    padding-left: 55px !important;
+}
+#chat-input-actions-top .chat-action-icon-btn [class*="icon"] {
+    position: absolute !important;
+    left: 8px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 16px !important;
+    height: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* 放大悬浮窗里的 transfer-btn 和 open-sticker-panel-btn 图标 */
+#chat-input-actions-top.menu-open #transfer-btn,
+#chat-input-actions-top.menu-open #open-sticker-panel-btn,
+#chat-input-actions-top:hover #transfer-btn,
+#chat-input-actions-top:hover #open-sticker-panel-btn {
+    font-size: 25px !important; /* 调整字体大小放大图标 */
+    line-height: 32px !important; /* 垂直居中 */
+    text-align: center !important; /* 水平居中 */
+}
+
+/* ========= 引用消息 ========= */
+
+/* 1. 彻底隐藏原有的 sender 和多余遮罩 */
+.message-bubble .quoted-message .quoted-sender { display: none !important; }
+
+/* 2. 空间管理 */
+.message-bubble:has(.quoted-message) {
+    position: relative !important;
+    margin-bottom: 23px !important; 
+}
+
+.message-wrapper:has(.quoted-message) {
+    margin-bottom: 3px !important; 
+}
+
+
+/* 我方 (User) 引用消息样式 */
+.message-bubble.user .quoted-message {
+    position: absolute !important;
+    top: 100% !important; 
+    bottom: auto !important; 
+    margin-top: 6px !important;
+    margin-bottom: 0 !important; 
+    right: 0 !important;
+    left: auto !important;
+    height: 22px !important;
+    width: max-content !important;
+    background-color: transparent !important; 
+    border: none !important;
+    padding: 0 !important; 
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    z-index: 10 !important;
+}
+
+/* ★ 我方文字与内容 */
+.message-bubble.user .quoted-message .quoted-content {
+    position: relative !important;
+    background-color: transparent !important; 
+    border: none !important;
+    padding: 0 37px 0 0 !important;
+    max-width: 120px !important;
+    color: #5a5a5a !important;
+    font-size: 12px !important;
+    height: 22px !important;
+    line-height: 22px !important; 
+    display: block !important;
+    white-space: nowrap !important; 
+    overflow: hidden !important;    
+    text-overflow: ellipsis !important; 
+    margin: 0 !important;
+}
+
+/* ★ 我方「Re」 */
+.message-bubble.user .quoted-message .quoted-content::before {
+    content: ': Re' !important;
+    position: absolute !important;
+    display: block !important;
+    right: 10px !important;
+    top: 0px !important; 
+    color: #5a5a5a !important;
+    font-size: 12px !important;
+    line-height: 22px !important; 
+    font-weight: normal !important;
+    background: none !important;
+    border: none !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* ★ 我方白色卡片竖线 */
+.message-bubble.user .quoted-message .quoted-content::after {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    right: 0px !important;
+    top: 3px !important;
+    width: 2px !important;
+    height: 14px !important; 
+    background-color: white !important;
+    border: 1px solid #dcdcdc !important; 
+    border-radius: 2px !important;
+    padding: 0 !important;
+}
+
+
+/* 对方 (AI) 引用消息样式 */
+.message-bubble.ai .quoted-message {
+    position: absolute !important;
+    top: 100% !important; 
+    bottom: auto !important; 
+    margin-top: 6px !important;
+    margin-bottom: 0 !important; 
+    left: 0 !important;
+    right: auto !important;
+    height: 22px !important;
+    width: max-content !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important; 
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    z-index: 10 !important;
+}
+
+/* ★ 对方文字与内容 */
+.message-bubble.ai .quoted-message .quoted-content {
+    position: relative !important;
+    background-color: transparent !important; 
+    border: none !important;
+    padding: 0 0 0 37px !important;
+    max-width: 120px !important;
+    color: #5a5a5a !important;
+    font-size: 12px !important;
+    height: 22px !important;
+    line-height: 22px !important; 
+    display: block !important;
+    white-space: nowrap !important; 
+    overflow: hidden !important;   
+    text-overflow: ellipsis !important; 
+    margin: 0 !important;
+}
+
+/* ★ 对方白色卡片竖线 */
+.message-bubble.ai .quoted-message .quoted-content::before {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    left: 0px !important;
+    top: 3px !important; 
+    width: 2px !important;
+    height: 14px !important; 
+    background-color: white !important;
+    border: 1px solid #dcdcdc !important; 
+    border-radius: 2px !important;
+    padding: 0 !important;
+}
+
+/* ★ 对方「Re」 */
+.message-bubble.ai .quoted-message .quoted-content::after {
+    content: 'Re :' !important;
+    position: absolute !important;
+    display: block !important;
+    left: 10px !important;
+    top: 0px !important;
+    color: #5a5a5a !important;
+    font-size: 12px !important;
+    line-height: 22px !important;
+    font-weight: normal !important;
+    background: none !important;
+    border: none !important;
+    width: auto !important;
+    height: auto !important;
+}
+/* 通用清理 */
+.quoted-message {
+    line-height: normal !important;
+}
+.message-bubble.user .quoted-message::after,
+.message-bubble.ai .quoted-message::before {
+    display: none !important;
+}
 </style>
