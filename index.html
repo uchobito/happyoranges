@@ -20,7 +20,7 @@
   <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.6/StreamSaver.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
-<!-- ▼▼▼ EPhone 增强插件：流式开关 + 世界书全局头部 + 随机宏解析 ▼▼▼ -->
+<!-- ▼▼▼ EPhone 增强插件：流式开关 + 全局首尾注入 + 随机宏解析 ▼▼▼ -->
   <script>
   (function() {
     // --- 工具函数：解析 {{random::...}} 和 {{roll:XdY}} 宏 ---
@@ -44,7 +44,64 @@
       return text;
     }
 
-    // --- 1. 页面加载后注入 UI（API流式开关 + 世界书全局头部） ---
+    // --- 工具函数：创建可折叠的注入卡片 ---
+    function createInjectCard({ idPrefix, title, desc, placeholder, storageEnableKey, storageContentKey }) {
+      const box = document.createElement('div');
+      box.id = `${idPrefix}-box`;
+      box.style.cssText = 'margin: 8px 15px 4px; padding: 10px 12px; border-radius: 10px; background: var(--secondary-bg, #f7f7f7); border: 1px solid var(--border-color, #e5e5e5); flex-shrink: 0;';
+      box.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span id="${idPrefix}-toggle-btn" style="font-size: 14px; font-weight: 600; cursor: pointer; user-select: none; color: var(--text-primary, #333);">
+            ▸ ${title}
+          </span>
+          <label class="toggle-switch" style="transform: scale(0.85); margin: 0;">
+            <input type="checkbox" id="${idPrefix}-enable-switch">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div id="${idPrefix}-editor-area" style="display: none; margin-top: 10px;">
+          <textarea id="${idPrefix}-textarea" rows="4" placeholder="${placeholder}" style="width: 100%; box-sizing: border-box; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color, #ccc); font-family: monospace; font-size: 12px; resize: vertical; background: var(--primary-bg, #fff); color: var(--text-primary, #333);"></textarea>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+            <span style="font-size: 11px; color: #888;">${desc}</span>
+            <button type="button" id="${idPrefix}-test-btn" style="padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #ccc; background: transparent; color: var(--text-primary, #333); cursor: pointer;">测试宏效果</button>
+          </div>
+          <div id="${idPrefix}-preview" style="display: none; margin-top: 6px; padding: 6px 8px; font-size: 11px; font-family: monospace; background: rgba(0,0,0,0.05); border-radius: 4px; white-space: pre-wrap; word-break: break-all; color: #555;"></div>
+        </div>
+      `;
+
+      const toggleBtn = box.querySelector(`#${idPrefix}-toggle-btn`);
+      const editorArea = box.querySelector(`#${idPrefix}-editor-area`);
+      const enableSwitch = box.querySelector(`#${idPrefix}-enable-switch`);
+      const textarea = box.querySelector(`#${idPrefix}-textarea`);
+      const testBtn = box.querySelector(`#${idPrefix}-test-btn`);
+      const preview = box.querySelector(`#${idPrefix}-preview`);
+
+      enableSwitch.checked = localStorage.getItem(storageEnableKey) === 'true';
+      textarea.value = localStorage.getItem(storageContentKey) || '';
+
+      toggleBtn.addEventListener('click', () => {
+        const isHidden = editorArea.style.display === 'none';
+        editorArea.style.display = isHidden ? 'block' : 'none';
+        toggleBtn.textContent = (isHidden ? '▾ ' : '▸ ') + title;
+      });
+
+      enableSwitch.addEventListener('change', (e) => {
+        localStorage.setItem(storageEnableKey, e.target.checked);
+      });
+
+      textarea.addEventListener('input', (e) => {
+        localStorage.setItem(storageContentKey, e.target.value);
+      });
+
+      testBtn.addEventListener('click', () => {
+        preview.style.display = 'block';
+        preview.textContent = '预览结果：\n' + parseMacros(textarea.value);
+      });
+
+      return box;
+    }
+
+    // --- 1. 页面加载后注入 UI ---
     window.addEventListener('DOMContentLoaded', () => {
       // (A) 在 API 设置中插入流式开关
       const tempSlider = document.getElementById('api-temperature-slider');
@@ -74,73 +131,41 @@
         });
       }
 
-      // (B) 在“世界书”页面顶部插入全局头部（支持宏）
+      // (B) 在“世界书”页面顶部插入全局头部 & 全局尾部卡片
       const wbTabs = document.getElementById('world-book-tabs');
       if (wbTabs && wbTabs.parentNode) {
-        const headerBox = document.createElement('div');
-        headerBox.id = 'wb-global-header-box';
-        headerBox.style.cssText = 'margin: 10px 15px 5px; padding: 10px 12px; border-radius: 10px; background: var(--secondary-bg, #f7f7f7); border: 1px solid var(--border-color, #e5e5e5); flex-shrink: 0;';
-        headerBox.innerHTML = `
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span id="wb-header-toggle-btn" style="font-size: 14px; font-weight: 600; cursor: pointer; user-select: none; color: var(--text-primary, #333);">
-              ▸ 全局头部注入 (支持宏)
-            </span>
-            <label class="toggle-switch" style="transform: scale(0.85); margin: 0;">
-              <input type="checkbox" id="wb-header-enable-switch">
-              <span class="slider"></span>
-            </label>
-          </div>
-          <div id="wb-header-editor-area" style="display: none; margin-top: 10px;">
-            <textarea id="wb-header-textarea" rows="5" placeholder="在此输入全局头部内容，支持 {{random::A::B}} 和 {{roll:1d999}} 宏..." style="width: 100%; box-sizing: border-box; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color, #ccc); font-family: monospace; font-size: 12px; resize: vertical; background: var(--primary-bg, #fff); color: var(--text-primary, #333);"></textarea>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
-              <span style="font-size: 11px; color: #888;">自动保存 · 每次对话自动注入到最顶部</span>
-              <button type="button" id="wb-header-test-btn" style="padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #ccc; background: transparent; color: var(--text-primary, #333); cursor: pointer;">测试宏效果</button>
-            </div>
-            <div id="wb-header-preview" style="display: none; margin-top: 6px; padding: 6px 8px; font-size: 11px; font-family: monospace; background: rgba(0,0,0,0.05); border-radius: 4px; white-space: pre-wrap; word-break: break-all; color: #555;"></div>
-          </div>
-        `;
-        wbTabs.parentNode.insertBefore(headerBox, wbTabs);
-
-        const toggleBtn = document.getElementById('wb-header-toggle-btn');
-        const editorArea = document.getElementById('wb-header-editor-area');
-        const enableSwitch = document.getElementById('wb-header-enable-switch');
-        const textarea = document.getElementById('wb-header-textarea');
-        const testBtn = document.getElementById('wb-header-test-btn');
-        const preview = document.getElementById('wb-header-preview');
-
-        // 恢复本地保存的数据
-        enableSwitch.checked = localStorage.getItem('ephone_wb_header_enabled') === 'true';
-        textarea.value = localStorage.getItem('ephone_wb_header_content') || '';
-
-        toggleBtn.addEventListener('click', () => {
-          const isHidden = editorArea.style.display === 'none';
-          editorArea.style.display = isHidden ? 'block' : 'none';
-          toggleBtn.textContent = (isHidden ? '▾ ' : '▸ ') + '全局头部注入 (支持宏)';
+        const headerCard = createInjectCard({
+          idPrefix: 'wb-global-header',
+          title: '全局头部注入 (支持宏)',
+          desc: '自动保存 · 注入到所有提示词最前面',
+          placeholder: '在此输入全局头部内容，支持 {{random::A::B}} 和 {{roll:1d999}} 宏...',
+          storageEnableKey: 'ephone_wb_header_enabled',
+          storageContentKey: 'ephone_wb_header_content'
         });
 
-        enableSwitch.addEventListener('change', (e) => {
-          localStorage.setItem('ephone_wb_header_enabled', e.target.checked);
+        const footerCard = createInjectCard({
+          idPrefix: 'wb-global-footer',
+          title: '全局尾部注入 (支持宏)',
+          desc: '自动保存 · 注入到所有提示词最后面',
+          placeholder: '在此输入全局尾部内容，支持 {{random::A::B}} 和 {{roll:1d999}} 宏...',
+          storageEnableKey: 'ephone_wb_footer_enabled',
+          storageContentKey: 'ephone_wb_footer_content'
         });
 
-        textarea.addEventListener('input', (e) => {
-          localStorage.setItem('ephone_wb_header_content', e.target.value);
-        });
-
-        // 点击“测试宏效果”可当场预览随机生成的结果
-        testBtn.addEventListener('click', () => {
-          preview.style.display = 'block';
-          preview.textContent = '预览结果：\n' + parseMacros(textarea.value);
-        });
+        wbTabs.parentNode.insertBefore(headerCard, wbTabs);
+        wbTabs.parentNode.insertBefore(footerCard, wbTabs);
       }
     });
 
-    // --- 2. 拦截 Fetch：注入头部 + 解析宏 + 流式转非流式 ---
+    // --- 2. 拦截 Fetch：注入首尾 + 解析宏 + 流式转非流式 ---
     const originalFetch = window.fetch;
     window.fetch = async function(...args) {
       let [url, config] = args;
       const isStreamEnabled = localStorage.getItem('ephone_force_stream') !== 'false';
       const isHeaderEnabled = localStorage.getItem('ephone_wb_header_enabled') === 'true';
       const headerContent = (localStorage.getItem('ephone_wb_header_content') || '').trim();
+      const isFooterEnabled = localStorage.getItem('ephone_wb_footer_enabled') === 'true';
+      const footerContent = (localStorage.getItem('ephone_wb_footer_content') || '').trim();
 
       let isChatRequest = false;
       if (config && config.method === 'POST' && typeof config.body === 'string') {
@@ -149,7 +174,7 @@
           if (bodyObj && Array.isArray(bodyObj.messages)) {
             isChatRequest = true;
 
-            // (1) 注入世界书全局头部到最顶部
+            // (1) 注入全局头部到最顶部
             if (isHeaderEnabled && headerContent) {
               if (bodyObj.messages.length > 0 && bodyObj.messages[0].role === 'system' && typeof bodyObj.messages[0].content === 'string') {
                 bodyObj.messages[0].content = headerContent + '\n\n' + bodyObj.messages[0].content;
@@ -158,7 +183,21 @@
               }
             }
 
-            // (2) 对所有消息执行宏解析（头部和普通世界书都生效）
+            // (2) 注入全局尾部到最后一条消息的末尾
+            if (isFooterEnabled && footerContent && bodyObj.messages.length > 0) {
+              const lastIdx = bodyObj.messages.length - 1;
+              const lastMsg = bodyObj.messages[lastIdx];
+              if (typeof lastMsg.content === 'string') {
+                bodyObj.messages[lastIdx] = { ...lastMsg, content: lastMsg.content + '\n\n' + footerContent };
+              } else if (Array.isArray(lastMsg.content)) {
+                bodyObj.messages[lastIdx] = {
+                  ...lastMsg,
+                  content: [...lastMsg.content, { type: 'text', text: '\n\n' + footerContent }]
+                };
+              }
+            }
+
+            // (3) 对所有消息执行宏解析（头部、尾部、世界书、聊天均生效）
             bodyObj.messages = bodyObj.messages.map(msg => {
               if (typeof msg.content === 'string') {
                 return { ...msg, content: parseMacros(msg.content) };
@@ -175,7 +214,7 @@
               return msg;
             });
 
-            // (3) 按需开启流式
+            // (4) 按需开启流式
             if (isStreamEnabled) {
               bodyObj.stream = true;
             }
