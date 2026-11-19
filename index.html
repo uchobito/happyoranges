@@ -20,11 +20,33 @@
   <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.6/StreamSaver.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
-<!-- ▼▼▼ 新增：流式开关与后台流式转非流式插件 ▼▼▼ -->
+<!-- ▼▼▼ EPhone 增强插件：流式开关 + 世界书全局头部 + 随机宏解析 ▼▼▼ -->
   <script>
   (function() {
-    // 1. 页面加载后，在“API设置”界面自动插入流式开关 UI
+    // --- 工具函数：解析 {{random::...}} 和 {{roll:XdY}} 宏 ---
+    function parseMacros(text) {
+      if (typeof text !== 'string') return text;
+      // 1. 解析 {{random::A::B::C}}
+      text = text.replace(/\{\{random::([\s\S]*?)\}\}/gi, (_, content) => {
+        const options = content.split('::');
+        return options[Math.floor(Math.random() * options.length)];
+      });
+      // 2. 解析 {{roll:1d999}}
+      text = text.replace(/\{\{roll:(\d+)d(\d+)\}\}/gi, (_, count, sides) => {
+        const c = Math.min(parseInt(count, 10) || 1, 100);
+        const s = parseInt(sides, 10) || 6;
+        let total = 0;
+        for (let i = 0; i < c; i++) {
+          total += Math.floor(Math.random() * s) + 1;
+        }
+        return String(total);
+      });
+      return text;
+    }
+
+    // --- 1. 页面加载后注入 UI（API流式开关 + 世界书全局头部） ---
     window.addEventListener('DOMContentLoaded', () => {
+      // (A) 在 API 设置中插入流式开关
       const tempSlider = document.getElementById('api-temperature-slider');
       if (tempSlider) {
         const tempGroup = tempSlider.closest('.form-group');
@@ -35,7 +57,7 @@
           <label for="ephone-stream-switch" style="margin-bottom: 0;">
             强制开启流式传输 (Stream)
             <p style="font-size: 12px; font-weight: normal; color: #999; margin-top: 5px;">
-              遇到必须使用流式 (stream: true) 的 API 时请开启此项；普通非流式 API 可随时关闭。
+              遇到必须使用流式 (stream: true) 的 API 时开启；普通非流式 API 可随时关闭。
             </p>
           </label>
           <label class="toggle-switch">
@@ -46,28 +68,117 @@
         tempGroup.parentNode.insertBefore(streamGroup, tempGroup.nextSibling);
 
         const streamSwitch = document.getElementById('ephone-stream-switch');
-        // 读取本地保存的开关状态（默认开启）
         streamSwitch.checked = localStorage.getItem('ephone_force_stream') !== 'false';
         streamSwitch.addEventListener('change', (e) => {
           localStorage.setItem('ephone_force_stream', e.target.checked);
         });
       }
+
+      // (B) 在“世界书”页面顶部插入全局头部（支持宏）
+      const wbTabs = document.getElementById('world-book-tabs');
+      if (wbTabs && wbTabs.parentNode) {
+        const headerBox = document.createElement('div');
+        headerBox.id = 'wb-global-header-box';
+        headerBox.style.cssText = 'margin: 10px 15px 5px; padding: 10px 12px; border-radius: 10px; background: var(--secondary-bg, #f7f7f7); border: 1px solid var(--border-color, #e5e5e5); flex-shrink: 0;';
+        headerBox.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span id="wb-header-toggle-btn" style="font-size: 14px; font-weight: 600; cursor: pointer; user-select: none; color: var(--text-primary, #333);">
+              ▸ 全局头部注入 (支持宏)
+            </span>
+            <label class="toggle-switch" style="transform: scale(0.85); margin: 0;">
+              <input type="checkbox" id="wb-header-enable-switch">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div id="wb-header-editor-area" style="display: none; margin-top: 10px;">
+            <textarea id="wb-header-textarea" rows="5" placeholder="在此输入全局头部内容，支持 {{random::A::B}} 和 {{roll:1d999}} 宏..." style="width: 100%; box-sizing: border-box; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color, #ccc); font-family: monospace; font-size: 12px; resize: vertical; background: var(--primary-bg, #fff); color: var(--text-primary, #333);"></textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+              <span style="font-size: 11px; color: #888;">自动保存 · 每次对话自动注入到最顶部</span>
+              <button type="button" id="wb-header-test-btn" style="padding: 3px 8px; font-size: 11px; border-radius: 4px; border: 1px solid #ccc; background: transparent; color: var(--text-primary, #333); cursor: pointer;">测试宏效果</button>
+            </div>
+            <div id="wb-header-preview" style="display: none; margin-top: 6px; padding: 6px 8px; font-size: 11px; font-family: monospace; background: rgba(0,0,0,0.05); border-radius: 4px; white-space: pre-wrap; word-break: break-all; color: #555;"></div>
+          </div>
+        `;
+        wbTabs.parentNode.insertBefore(headerBox, wbTabs);
+
+        const toggleBtn = document.getElementById('wb-header-toggle-btn');
+        const editorArea = document.getElementById('wb-header-editor-area');
+        const enableSwitch = document.getElementById('wb-header-enable-switch');
+        const textarea = document.getElementById('wb-header-textarea');
+        const testBtn = document.getElementById('wb-header-test-btn');
+        const preview = document.getElementById('wb-header-preview');
+
+        // 恢复本地保存的数据
+        enableSwitch.checked = localStorage.getItem('ephone_wb_header_enabled') === 'true';
+        textarea.value = localStorage.getItem('ephone_wb_header_content') || '';
+
+        toggleBtn.addEventListener('click', () => {
+          const isHidden = editorArea.style.display === 'none';
+          editorArea.style.display = isHidden ? 'block' : 'none';
+          toggleBtn.textContent = (isHidden ? '▾ ' : '▸ ') + '全局头部注入 (支持宏)';
+        });
+
+        enableSwitch.addEventListener('change', (e) => {
+          localStorage.setItem('ephone_wb_header_enabled', e.target.checked);
+        });
+
+        textarea.addEventListener('input', (e) => {
+          localStorage.setItem('ephone_wb_header_content', e.target.value);
+        });
+
+        // 点击“测试宏效果”可当场预览随机生成的结果
+        testBtn.addEventListener('click', () => {
+          preview.style.display = 'block';
+          preview.textContent = '预览结果：\n' + parseMacros(textarea.value);
+        });
+      }
     });
 
-    // 2. 拦截并转换 Fetch 请求
+    // --- 2. 拦截 Fetch：注入头部 + 解析宏 + 流式转非流式 ---
     const originalFetch = window.fetch;
     window.fetch = async function(...args) {
       let [url, config] = args;
       const isStreamEnabled = localStorage.getItem('ephone_force_stream') !== 'false';
+      const isHeaderEnabled = localStorage.getItem('ephone_wb_header_enabled') === 'true';
+      const headerContent = (localStorage.getItem('ephone_wb_header_content') || '').trim();
 
       let isChatRequest = false;
-      // 仅在开关开启、且是包含 messages 数组的对话请求时才介入
-      if (isStreamEnabled && config && config.method === 'POST' && typeof config.body === 'string') {
+      if (config && config.method === 'POST' && typeof config.body === 'string') {
         try {
           let bodyObj = JSON.parse(config.body);
           if (bodyObj && Array.isArray(bodyObj.messages)) {
             isChatRequest = true;
-            bodyObj.stream = true;
+
+            // (1) 注入世界书全局头部到最顶部
+            if (isHeaderEnabled && headerContent) {
+              if (bodyObj.messages.length > 0 && bodyObj.messages[0].role === 'system' && typeof bodyObj.messages[0].content === 'string') {
+                bodyObj.messages[0].content = headerContent + '\n\n' + bodyObj.messages[0].content;
+              } else {
+                bodyObj.messages.unshift({ role: 'system', content: headerContent });
+              }
+            }
+
+            // (2) 对所有消息执行宏解析（头部和普通世界书都生效）
+            bodyObj.messages = bodyObj.messages.map(msg => {
+              if (typeof msg.content === 'string') {
+                return { ...msg, content: parseMacros(msg.content) };
+              } else if (Array.isArray(msg.content)) {
+                return {
+                  ...msg,
+                  content: msg.content.map(item =>
+                    item.type === 'text' && typeof item.text === 'string'
+                      ? { ...item, text: parseMacros(item.text) }
+                      : item
+                  )
+                };
+              }
+              return msg;
+            });
+
+            // (3) 按需开启流式
+            if (isStreamEnabled) {
+              bodyObj.stream = true;
+            }
             config.body = JSON.stringify(bodyObj);
           }
         } catch (e) {}
@@ -75,13 +186,11 @@
 
       const response = await originalFetch(url, config);
 
-      // 如果不是对话请求，或者请求报错（如 401/403/500），直接原样返回，不影响原有报错提示
-      if (!isChatRequest || !response.ok) {
+      if (!isChatRequest || !isStreamEnabled || !response.ok) {
         return response;
       }
 
       const contentType = response.headers.get('content-type') || '';
-      // 当返回的是流式数据 (text/event-stream) 时，在后台收集并拼接
       if (contentType.includes('text/event-stream') && response.body) {
         const reader = response.body.getReader();
         const decoder = new TextDecoder('utf-8');
@@ -118,7 +227,6 @@
           console.error('流式数据读取中断:', err);
         }
 
-        // 处理可能残留在 buffer 中的最后一行
         if (buffer.trim().startsWith('data:')) {
           const dataStr = buffer.trim().slice(5).trim();
           if (dataStr !== '[DONE]') {
@@ -130,7 +238,6 @@
           }
         }
 
-        // 组装成标准的非流式 JSON 结构交还给 EPhone 的 script.js
         const fakeResponse = {
           id: lastChunkObj?.id || 'chatcmpl-stream-merged',
           object: 'chat.completion',
